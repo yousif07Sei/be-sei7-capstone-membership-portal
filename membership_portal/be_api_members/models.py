@@ -41,27 +41,9 @@ class Country(models.Model):
         verbose_name_plural = 'Countries'
         ordering = ['name']
         
-
-# Create your models here.
-class Country(models.Model):
-    name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=20)
-    nationality_name = models.CharField(max_length=40)
-    flag = models.CharField(max_length=200)
-    capital = models.CharField(max_length=200)
-    currency = models.CharField(max_length=100)
-    currency_sign = models.CharField(max_length=20)
-    country_code = models.CharField(max_length=5)
-    listed = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
+    # def get_country_nationality(self):
+    #     return self.nationality_name
     
-    def get_country_nationality(self):
-        return self.nationality_name
-    
-    class Meta:
-        verbose_name_plural = 'Countries'
 class Organization(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     logo = models.ImageField(upload_to='main_app/static/uploads', default="")
@@ -77,8 +59,8 @@ class Organization(models.Model):
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
-    assistant = models.OneToOneField(User, on_delete = models.DO_NOTHING)
-    admin = models.OneToOneField(User, on_delete = models.DO_NOTHING, blank=False, default=1)
+    # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
+    # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
     def __str__(self):
         print(self.name)
