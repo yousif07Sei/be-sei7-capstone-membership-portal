@@ -3,10 +3,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 martial_Status = (
-    ('Mr.','Mr.'),
-    ('Ms.','Ms.'),
-    ('Miss.','Miss.'),
-    ('Dr.','Dr.')
+    ('Married','Married'),
+    ('Single','Single'),
 )
 
 status = (
