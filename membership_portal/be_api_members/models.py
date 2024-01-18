@@ -5,7 +5,6 @@ class Organization(models.Model):
     name = models.CharField(max_length=100)
     phoneNumber = models.CharField(max_length=100)
     emailAddress = models.EmailField(max_length=100)
-    type = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
