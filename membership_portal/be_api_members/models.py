@@ -36,12 +36,12 @@ class Organization(models.Model):
     address_1 = models.CharField(max_length=100, blank=False, null=False)
     address_2 = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=False, null=False)
-    # country = models.CharField(max_length=100)
+    country = models.OneToOneField(Country, on_delete = models.DO_NOTHING, blank=False, null=False, default=837)
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
-    # assistant = models.CharField()
-    # admin = models.CharField()
+    assistant = models.OneToOneField(User, on_delete = models.DO_NOTHING)
+    admin = models.OneToOneField(User, on_delete = models.DO_NOTHING, blank=False, default=1)
 
     def __str__(self):
         return self.name
