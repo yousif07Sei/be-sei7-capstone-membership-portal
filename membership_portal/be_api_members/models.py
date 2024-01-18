@@ -76,7 +76,7 @@ class Organization(models.Model):
     
 class Plan(models.Model):
     name =models.CharField(max_length=100)
-    price = models.DecimalField()
+    price = models.DecimalField(max_digits=4, decimal_places=2)
     member_number = models.IntegerField()
     features = models.CharField(max_length=1, choices=features, default=features[0][0])
 
