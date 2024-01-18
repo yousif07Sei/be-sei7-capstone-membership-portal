@@ -10,6 +10,9 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
     
+    # class Meta:
+    #     permissions = (("change_org_name_"))
+    
 class Country(models.Model):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=20)
