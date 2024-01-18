@@ -22,6 +22,11 @@ interests = (
     ('7', 'Women in Business'),
     ('8', 'Young Professionals'), 
 )
+features = (
+    ("B", "Benefits"),
+    ("E", "Events"),
+    ("N", "Newsletters"),
+)
 
 class Country(models.Model):
     name = models.CharField(max_length=200)
@@ -65,6 +70,15 @@ class Organization(models.Model):
     def __str__(self):
         print(self.name)
         return self.name
+class Plan(models.Model):
+    name =models.CharField(max_length=100)
+    price = models.DecimalField()
+    member_number = models.IntegerField()
+    features = models.CharField(max_length=1, choices=features, default=features[0][0])
+
+    status = models.BooleanField(default=True)
+    # PlanFeature = models.ManyToManyField(PlanFeature)
+
 
 
 class Profile(models.Model):
