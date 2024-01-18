@@ -88,6 +88,7 @@ class Profile(models.Model):
     gender = models.CharField(choices = (('Male','Male'),('Female','Female')))
     orgnization = models.OneToOneField(Organization, on_delete = models.CASCADE)
     role = models.IntegerField(
+        default=4,
         validators = [
             MaxValueValidator(4),
             MinValueValidator(1)
