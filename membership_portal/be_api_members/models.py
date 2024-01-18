@@ -24,6 +24,26 @@ interests = (
     (7, 'Women in Business'),
     (8, 'Young Professionals'), 
 )
+
+class Country(models.Model):
+    name = models.CharField(max_length=200)
+    short_name = models.CharField(max_length=20)
+    nationality_name = models.CharField(max_length=40)
+    flag = models.CharField(max_length=200)
+    capital = models.CharField(max_length=200)
+    currency = models.CharField(max_length=100)
+    currency_sign = models.CharField(max_length=20)
+    country_code = models.CharField(max_length=5)
+    listed = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = 'Countries'
+        ordering = ['name']
+        
+
 # Create your models here.
 class Organization(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
@@ -60,7 +80,15 @@ class Profile(models.Model):
         choices = martial_Status,
         default = ""
         )
-    nationality = models.CharField(max_length=100)
+    # nationality = models.CharField(max_length=100)
+    # nationality = models.ForeignKey(Country, to_field='nationality_name', on_delete = models.DO_NOTHING, default=837, unique=True)
+    nationality = models.OneToOneField(Country, on_delete = models.DO_NOTHING, default=837, related_name='user_nationality')
+    
+    # @_nationality.setter
+    # def nationality(self):
+    #     print("Hello ",self.nationality.country_profile.nationality_name)
+    #     return self.nationality.country_profile.nationality_name
+    
     gender = models.CharField(choices = (('Male','Male'),('Female','Female')))
     orgnization = models.OneToOneField(Organization, on_delete = models.CASCADE)
     role = models.IntegerField(
@@ -74,26 +102,16 @@ class Profile(models.Model):
         choices = status,
         default = status[0][0]
     )
+
+    # @property
+    # def nationality_value(self):
+    #     print("Hello ",self.nationality.nationality_name)
+    #     return self.nationality.nationality_name
     
 
     
     # class Meta:
     #     permissions = (("change_org_name_"))
     
-class Country(models.Model):
-    name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=20)
-    nationality_name = models.CharField(max_length=40)
-    flag = models.CharField(max_length=200)
-    capital = models.CharField(max_length=200)
-    currency = models.CharField(max_length=100)
-    currency_sign = models.CharField(max_length=20)
-    country_code = models.CharField(max_length=5)
-    listed = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.name
-    
-    class Meta:
-        verbose_name_plural = 'Countries'
 
