@@ -13,14 +13,14 @@ status = (
 )
 
 interests = (
-    (1, 'Organization & Effectiveness'),
-    (2, 'Projects & Construction'),
-    (3, 'Banking & Finance'),
-    (4, 'Hospitality, Leisure & Tourism'),
-    (5, 'ICT'),
-    (6, 'Legal'),
-    (7, 'Women in Business'),
-    (8, 'Young Professionals'), 
+    ('1', 'Organization & Effectiveness'),
+    ('2', 'Projects & Construction'),
+    ('3', 'Banking & Finance'),
+    ('4', 'Hospitality, Leisure & Tourism'),
+    ('5', 'ICT'),
+    ('6', 'Legal'),
+    ('7', 'Women in Business'),
+    ('8', 'Young Professionals'), 
 )
 # Create your models here.
 class Country(models.Model):
@@ -53,12 +53,12 @@ class Organization(models.Model):
     address_one = models.CharField(max_length=100) #,blank=False, null=False
     address_two = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=False, null=False)
-    # country = models.CharField(max_length=100)
+    country = models.OneToOneField(Country, on_delete = models.DO_NOTHING, blank=False, null=False, default=837)
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
-    # assistant = models.CharField()
-    # admin = models.CharField()
+    assistant = models.OneToOneField(User, on_delete = models.DO_NOTHING)
+    admin = models.OneToOneField(User, on_delete = models.DO_NOTHING, blank=False, default=1)
 
     def __str__(self):
         print(self.name)
