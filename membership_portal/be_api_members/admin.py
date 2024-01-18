@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, Organization,Profile
+from .models import Country, Organization,Profile,Plan
 
 # Modify fields in admin panel
 class CountryAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class CountryAdmin(admin.ModelAdmin):
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Organization)
 admin.site.register(Profile)
+admin.site.register(Plan)
