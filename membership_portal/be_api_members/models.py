@@ -15,14 +15,14 @@ status = (
 )
 
 interests = (
-    (1, 'Organization & Effectiveness'),
-    (2, 'Projects & Construction'),
-    (3, 'Banking & Finance'),
-    (4, 'Hospitality, Leisure & Tourism'),
-    (5, 'ICT'),
-    (6, 'Legal'),
-    (7, 'Women in Business'),
-    (8, 'Young Professionals'), 
+    ('1', 'Organization & Effectiveness'),
+    ('2', 'Projects & Construction'),
+    ('3', 'Banking & Finance'),
+    ('4', 'Hospitality, Leisure & Tourism'),
+    ('5', 'ICT'),
+    ('6', 'Legal'),
+    ('7', 'Women in Business'),
+    ('8', 'Young Professionals'), 
 )
 # Create your models here.
 class Organization(models.Model):
