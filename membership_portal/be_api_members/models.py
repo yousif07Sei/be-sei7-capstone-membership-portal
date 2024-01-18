@@ -23,6 +23,7 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     image = models.ImageField(upload_to = 'fs_business_mvt/static/uploads',default = "",blank=False,null=False)
@@ -51,3 +52,25 @@ class Profile(models.Model):
         default = status[0][0]
     )
     
+
+    
+    # class Meta:
+    #     permissions = (("change_org_name_"))
+    
+class Country(models.Model):
+    name = models.CharField(max_length=200)
+    short_name = models.CharField(max_length=20)
+    nationality_name = models.CharField(max_length=40)
+    flag = models.CharField(max_length=200)
+    capital = models.CharField(max_length=200)
+    currency = models.CharField(max_length=100)
+    currency_sign = models.CharField(max_length=20)
+    country_code = models.CharField(max_length=5)
+    listed = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = 'Countries'
+
