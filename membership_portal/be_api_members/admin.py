@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, Organization
+from .models import Country, Organization,Profile
 
 # Modify fields in admin panel
 class CountryAdmin(admin.ModelAdmin):
@@ -8,5 +8,7 @@ class CountryAdmin(admin.ModelAdmin):
     search_help_text = 'Search by Country Name'
 
 # Register your models here.
+
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Organization)
+admin.site.register(Profile)
