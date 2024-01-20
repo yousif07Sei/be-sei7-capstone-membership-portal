@@ -46,7 +46,7 @@ class Country(models.Model):
     
 class Organization(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
-    logo = models.ImageField(upload_to='main_app/static/uploads', default="")
+    logo = models.ImageField(upload_to='fs_business_mvt/static/uploads', default="")
     cr_number = models.CharField(max_length=20, blank=False, null=False)
     phone_number = models.CharField(max_length=100, blank=False, null=False)
     email_address = models.EmailField(max_length=100, blank=False, null=False)
