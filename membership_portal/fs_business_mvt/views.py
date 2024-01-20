@@ -37,6 +37,8 @@ class OrganizationUpdate(UpdateView):
         obj.save()
         return redirect('bussines_portal_app:organization_index')
     
-
+class OrganizationDelete(DeleteView):
+    model = Organization
+    success_url = '/organization/'
 class CountryList(ListView):
     model = Country
