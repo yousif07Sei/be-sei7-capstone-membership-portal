@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.forms import ValidationError
+from django.utils import timezone
 
 martial_Status = (
     ('Married','Married'),
@@ -68,7 +70,6 @@ class Organization(models.Model):
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        print(self.name)
         return self.name
     
 # class PlanFeature(models.Model):
@@ -133,4 +134,30 @@ class Profile(models.Model):
     #     permissions = (("change_org_name_"))
     
 
+class Benefit(models.Model):
+    organization = models.ForeignKey(Organization, unique=True, on_delete = models.CASCADE)
+    title = models.CharField(max_length = 250, null = False)
+    description = models.CharField(max_length = 500, null = False)
+    created_date = models.DateField(auto_now = True)
+    expiry_date = models.DateField()
+    # Register user to the benefit once they have used it
+    used_by_user = models.ManyToManyField(Profile, related_name = 'used_benefit', blank = True)
 
+    def __str__(self):
+        return  f'{self.title} by {self.organization}'
+    
+    # Validating that the expiry date is always greater than (or equal?) to the current date
+    # https://docs.djangoproject.com/en/4.2/ref/models/instances/#django.db.models.Model.clean
+    def clean(self):
+        if self.expiry_date < timezone.now().date():
+            raise ValidationError({'expiry_date': 'Expiry date cannot be older than today.'})
+
+    def assign_to_user(self, user):
+        '''
+        Call this function to add a user to the current benefit list once they redeem the benefit so they can't redeem it again.
+        '''
+        if user not in self.used_by_user.all():
+            self.used_by_user.add(user)
+            self.save()
+        else:
+            raise ValidationError("Benefit has already been used by this user.")
