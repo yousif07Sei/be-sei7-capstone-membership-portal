@@ -120,6 +120,9 @@ class Profile(models.Model):
         default = status[0][0]
     )
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
     # @property
     # def nationality_value(self):
     #     print("Hello ",self.nationality.nationality_name)
@@ -161,4 +164,5 @@ class Benefit(models.Model):
             self.used_by_user.add(user)
             self.save()
         else:
+            print('user already exist')
             raise ValidationError("Benefit has already been used by this user.")
