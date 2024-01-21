@@ -24,7 +24,7 @@
 <tr>
 <td>{{forloop.counter}}</td>
 <td><img src="{% static org.logo|cut:'fs_business_mvt/static/' %}" width="40px" height="40px" /></td>
-<td>{{org.name}}</td>
+<td><a href="{% url 'bussines_portal_app:organization_detail' org.id %}">{{org.name}}</a></td>
 <td>{{org.cr_number}}</td>
 <td>{{org.phone_number}}</td>
 <td>{{org.email_address}}</td>
