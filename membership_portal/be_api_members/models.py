@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ValidationError
 from django.utils import timezone
+from random import randint
 
 martial_Status = (
     ('Married','Married'),
@@ -135,7 +136,7 @@ class Profile(models.Model):
     
 
 class Benefit(models.Model):
-    organization = models.ForeignKey(Organization, unique=True, on_delete = models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete = models.CASCADE)
     title = models.CharField(max_length = 250, null = False)
     description = models.CharField(max_length = 500, null = False)
     created_date = models.DateField(auto_now = True)
