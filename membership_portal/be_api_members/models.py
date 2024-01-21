@@ -74,15 +74,18 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
     
-# class PlanFeature(models.Model):
-#     name = models.CharField(max_length=20)
+class PlanFeature(models.Model):
+    name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
     
 # Yousif Added the model plan
 class Plan(models.Model):
     name =models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     member_number = models.IntegerField()
-    features = models.CharField(max_length=1, choices=features, default=features[0][0])
+    # features = models.CharField(max_length=1, choices=features, default=features[0][0])
+    plan_feature = models.ManyToManyField(PlanFeature)
 
     status = models.BooleanField(default=True)
     # PlanFeature = models.ManyToManyField(PlanFeature)
