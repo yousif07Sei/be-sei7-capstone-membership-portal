@@ -29,6 +29,8 @@
                         {% csrf_token %}
                       </form>
                       <a href="#" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                    <li><a href="{% url 'bussines_portal_app:organization_index' %}">Organizations</a></li>
+                    <li><a>Users</a></li>
 
                     {% else %}
                     <li><a href="{% url 'login' %}">Log in</a></li>

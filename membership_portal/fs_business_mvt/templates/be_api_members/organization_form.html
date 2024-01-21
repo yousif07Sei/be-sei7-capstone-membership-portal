@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Edit {{object.name}}</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label  class="form-label">Name</label>
+      <input type="text" value="{{object.name}}" class="form-control"
+      name='name' >
+    </div>
+     <div class="mb-3">
+        <label  class="form-label">Logo</label>
+        <input type="file" class="form-control"
+        name='logo '>
+      </div> 
+      <div class="mb-3">
+        <label  class="form-label">CR Number</label>
+        <input type="text" class="form-control"
+        name=' cr_number ' value="{{ object.cr_number}}" disabled>
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Phone Number</label>
+        <input type="text" class="form-control"
+        name=' phone_number ' value="{{ object.phone_number}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Email Address</label>
+        <input type="text" class="form-control"
+        name=' email_address ' value="{{ object.email_address}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Sector</label>
+        <input type="text" class="form-control"
+        name=' sector ' value="{{ object.sector}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Website</label>
+        <input type="text" class="form-control"
+        name=' website ' value="{{ object.website}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Address 1</label>
+        <input type="text" class="form-control"
+        name=' address_one ' value="{{ object.address_one}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Address 2</label>
+        <input type="text" class="form-control"
+        name=' address_two ' value="{{ object.address_two}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Country</label>
+        <select name=' country ' class="form-control" value="{{object.country}}">
+            {% for country in form.country %}
+                <option value="{{ country.pk }}">
+                    {{ country }}
+                </option>
+            {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Zip Code</label>
+        <input type="number" class="form-control"
+        name=' zip_code ' value="{{ object.zip_code}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Content</label>
+        <textarea name='content_info' cols="20" rows="5" class="form-control">{{object.content_info}}
+        </textarea>
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Interests</label>
+            <select name=' interests ' class="form-control" valu="{{object.interests}">
+                {% for i in form.interests %}
+                    <option value="{{ i.pk }}">
+                        {{ i }}
+                    </option>
+                {% endfor %}
+            </select>
+          </div>
+        <input name="id" type="hidden" value="{{object.id}}" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{%  endblock  %}
