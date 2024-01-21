@@ -115,7 +115,7 @@ class Profile(models.Model):
     # related_query_name="%(app_label)s_%(class)ss_nationality_name" 
     # ,default = 837, related_name="nationality_namee"
     gender = models.CharField(choices = (('Male','Male'),('Female','Female')))
-    organization = models.ForeignKey(Organization, on_delete = models.CASCADE)
+    organization = models.ForeignKey(Organization, blank=True,null=True, on_delete = models.CASCADE)
     role = models.IntegerField(
         default=4,
         validators = [
