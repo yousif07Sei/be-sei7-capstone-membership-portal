@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic import ListView, DetailView
-from be_api_members.models import Organization , Country , Profile
+from be_api_members.models import Organization , Country , Plan, PlanFeature , Profile
+
 
 # Create your views here.
 def home(request):
@@ -36,6 +37,34 @@ class OrganizationUpdate(UpdateView):
         # Save the updated object
         obj.save()
         return redirect('bussines_portal_app:organization_index')
+    
+ # Yousif added the plan views
+class PlanList(ListView):
+    model=Plan
+
+
+class PlanDetail(DetailView):
+    model=Plan
+    
+
+
+class PlanCreate(CreateView):
+    model= Plan
+   
+
+
+
+class PlanUpdate(UpdateView):
+    model= Plan
+    fields= '__all__'
+    
+
+
+
+class PlanDelete(DeleteView):
+    model= Plan
+    success_url = '/plan/'
+   
     
 class OrganizationDelete(DeleteView):
     model = Organization
