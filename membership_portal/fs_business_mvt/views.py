@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic import ListView, DetailView
-from be_api_members.models import Organization , Country , Plan
+from be_api_members.models import Organization , Country , Plan, PlanFeature
 
 # Create your views here.
 def home(request):
@@ -44,6 +44,7 @@ class PlanList(ListView):
 
 class PlanDetail(DetailView):
     model=Plan
+    
 
 
 class PlanCreate(CreateView):
