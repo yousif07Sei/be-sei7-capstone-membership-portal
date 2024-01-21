@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h4>Are you sure you want to delete <span >{{ object.name }}</span>?</h4>
+<h6 style="color: red;">This action is not reversable!</h6>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Yes - Delete!" class="btn btn-danger">
+    <a href="{% url 'bussines_portal_app:plan_index' %}" class="btn btn-outline-success">Cancel</a>
+</form>
+<div class="mb-3">
+    
+  </div>
+{%  endblock  %}
