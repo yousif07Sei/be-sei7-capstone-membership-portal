@@ -5,6 +5,7 @@ from django.forms import ValidationError
 from django.utils import timezone
 from random import randint
 
+
 martial_Status = (
     ('Married','Married'),
     ('Single','Single'),
@@ -76,14 +77,18 @@ class Organization(models.Model):
 # class PlanFeature(models.Model):
 #     name = models.CharField(max_length=20)
     
+# Yousif Added the model plan
 class Plan(models.Model):
     name =models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=4, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     member_number = models.IntegerField()
     features = models.CharField(max_length=1, choices=features, default=features[0][0])
 
     status = models.BooleanField(default=True)
     # PlanFeature = models.ManyToManyField(PlanFeature)
+
+    def __str__(self):
+        return  f'{self.name}'
 
 
 

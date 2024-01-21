@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Edit {{object.name}}</h1>
+<form action="" method="POST" >
+    {% csrf_token %}
+    <div class="mb-3">
+      <label  class="form-label">Name</label>
+      <input type="text" value="{{object.name}}" class="form-control"
+      name='name' >
+    </div> 
+      <div class="mb-3">
+        <label  class="form-label">Price</label>
+        <input type="text" class="form-control"
+        name=' price ' value="{{ object.price}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Members Number</label>
+        <input type="text" class="form-control"
+        name=' member_number ' value="{{ object.member_number}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Features</label>
+        <input type="text" class="form-control"
+        name=' features ' value="{{ object.features}}">
+      </div>
+      
+     
+      
+     
+      
+     
+     
+        <input name="id" type="hidden" value="{{object.id}}" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{%  endblock  %}
