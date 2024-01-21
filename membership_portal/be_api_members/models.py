@@ -65,9 +65,7 @@ class Organization(models.Model):
     address_one = models.CharField(max_length=100) #,blank=False, null=False
     address_two = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=False, null=False)
-
     country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False,db_index=False,db_constraint=False, null=False, default=837)
-
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
