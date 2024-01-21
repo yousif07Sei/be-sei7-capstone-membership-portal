@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 import os #environment of django
@@ -158,8 +159,13 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
         'DEFAULT_PERMISSION_CLASSESS': 'rest_framework.permissions.AllowAny',
-
+    # Change this back to 5 minutes for production
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
 }
+
+MEDIA_URL = 'membership_portal/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'membership_portal/media/')
 
 # CORS_ALLOWED_ORIGINS = [
 #     'http://localhost:3000',
