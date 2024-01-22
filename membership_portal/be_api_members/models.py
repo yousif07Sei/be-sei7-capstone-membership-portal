@@ -11,11 +11,11 @@ martial_Status = (
     ('Single','Single'),
 )
 
-status = (
-    ('0','Pending'),
-    ('1','Active'),
-    ('2','Hidden'),
-)
+# status = (
+#     ('A','Active'),
+#     ('NA','Not Active'),
+#     ('IC',"Incomplete")
+# )
 
 interests = (
     ('1', 'Organization & Effectiveness'),
@@ -33,6 +33,11 @@ features = (
     ("N", "Newsletters"),
 )
 
+status=(
+    ('0','Pending'),
+    ('1','Active'),
+    ('2','Not Active'),
+)
 class Country(models.Model):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=20)
@@ -127,7 +132,7 @@ class Profile(models.Model):
     job_title = models.CharField(max_length = 100)
     status = models.CharField(
         choices = status,
-        default = status[0][0]
+        default = status[2][0]
     )
 
     def __str__(self):
