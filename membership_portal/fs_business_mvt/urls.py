@@ -13,7 +13,7 @@ urlpatterns = [
     
     path('profile/<int:pk>/update',views.ProfileUpdate.as_view(),name='profile_update'),
     path('profile/',views.ProfileList.as_view(),name='profile_index'),
-    path('organization/<int:user_id>/remove/<int:organization_id>',views.remove_member,name='remove_member')
+    path('organization/<int:user_id>/remove/<int:organization_id>',views.remove_member,name='remove_member'),
 
 
  # yousif added the planFeature

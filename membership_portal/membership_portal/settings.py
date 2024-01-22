@@ -160,7 +160,7 @@ REST_FRAMEWORK = {
     ],
         'DEFAULT_PERMISSION_CLASSESS': 'rest_framework.permissions.AllowAny',
     # Change this back to 5 minutes for production
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
 
 MEDIA_URL = 'membership_portal/media/'
