@@ -9,6 +9,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 class BenefitAdmin(admin.ModelAdmin):
     exclude = ('used_by_user', )
+    # pass
 
 # Register your models here.
 
