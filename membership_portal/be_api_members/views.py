@@ -6,9 +6,15 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
-from .models import Benefit, Profile
-from .serializers import BenefitSerializer
+from .models import Benefit, Profile, Organization
+# from .models import TestModel
+from .serializers import BenefitSerializer, BenefitRESTSerializers
+# from .serializers import TestModelSerializer
+from rest_framework.parsers import JSONParser
 import qrcode
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 @csrf_exempt
 @api_view(['GET'])
@@ -73,11 +79,87 @@ def benefit_detail(request):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def benefit_qrcode(request):
-    benefit_url = 'http://example.com/benefit/1283'
-    image_dir = settings.MEDIA_ROOT + '/'
-    if image_dir + 'test1.png':
+    benefit_url = str(os.getenv('FRONTENDURL'))
+    benefit_id = request.query_params['id']
+    # if benefit doesnt exist, return an error
+    try:
+        benefit = Benefit.objects.get(pk = benefit_id)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'message': f'Error, benefit with id {benefit_id} does not exist'})
+    
+    image_dir = settings.MEDIA_ROOT + '/qr/'
+    # check if media/qr folder doesnt exist, create it
+    if not os.path.exists(image_dir):
+        os.mkdir(image_dir)
+    # check if qr code already exists
+    if os.path.isfile(image_dir + f'{benefit_id}.png'):
         return JsonResponse({'messge': 'qr code exists'})
     else:
         img = qrcode.make(benefit_url)
-        img.save(image_dir + 'test.png')
+        print(benefit_url)
+        img.save(image_dir + f'{benefit_id}.png')
         return JsonResponse({'messge': 'qr code saved'})
+    
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def benefit_delete(request):
+    benefit_id = request.query_params['id']
+    try:
+        benefit = Benefit.objects.get(pk = benefit_id)
+        benefit.status = '2'
+        benefit.save()
+        return JsonResponse({'message': f'benefit {benefit_id} has been deleted'})
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: benefit {benefit_id} does not exist'})
+    
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def benefit_create(request):
+    # TODO... Validate that expiry date is not older than current date
+    # get data from the body
+    data = JSONParser().parse(request)
+    try:
+        organization_id = int(data['organization_id'])
+        organization = Organization.objects.get(pk = organization_id)
+    except ObjectDoesNotExist:
+        return JsonResponse({"message": f"Error: Organization with id {organization_id} does not exist"})
+    serializer = BenefitRESTSerializers(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse(serializer.errors)
+
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def benefit_update(request):
+    benefit_id = request.query_params['id']
+    try:
+        benefit = Benefit.objects.get(pk = int(benefit_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find benefit with id {benefit_id}'})
+    data = JSONParser().parse(request)
+    serializer = BenefitRESTSerializers(benefit, data = data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating benefit'})
+    
+# @csrf_exempt
+# @api_view(['POST'])
+# @permission_classes([permissions.IsAuthenticated])
+# def test_create(request):
+#     # get data from the body
+#     data = JSONParser().parse(request)
+#     serializer = TestModelSerializer(data=data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         print('yeeeeey')
+#         return JsonResponse(serializer.data, safe = False)
+#     # else:
+#     #     return JsonResponse({'message': 'Error: failed to create new benefit'})
+#     return JsonResponse(serializer, safe=False)

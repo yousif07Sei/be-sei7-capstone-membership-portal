@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{%if object%}
 <h1>Edit {{object.name}}</h1>
+{%else%}
+<h1>Create Plan</h1>
+{%endif%}
 <form action="" method="POST" >
     {% csrf_token %}
     <div class="mb-3">
@@ -12,18 +16,31 @@
       <div class="mb-3">
         <label  class="form-label">Price</label>
         <input type="text" class="form-control"
-        name=' price ' value="{{ object.price}}">
+        name='price' value="{{ object.price}}">
       </div>
       <div class="mb-3">
         <label  class="form-label">Members Number</label>
         <input type="text" class="form-control"
-        name=' member_number ' value="{{ object.member_number}}">
+        name='member_number' value="{{ object.member_number}}">
       </div>
+      <!-- {{ planfeature }} -->
+      <!-- {{ form.plan_feature }} -->
+
       <div class="mb-3">
+        <label  class="form-label">Features</label>
+        <select name='plan_feature' class="form-control" multiple="multiple">
+            {% for feature in planfeature %}
+                <option value="{{ feature.id }}">
+                    {{ feature }}
+                </option>
+            {% endfor %}
+        </select>
+      </div>
+      <!-- <div class="mb-3">
         <label  class="form-label">Features</label>
         <input type="text" class="form-control"
         name=' features ' value="{{ object.features}}">
-      </div>
+      </div> -->
       
      
       
@@ -31,7 +48,6 @@
       
      
      
-        <input name="id" type="hidden" value="{{object.id}}" />
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 {%  endblock  %}

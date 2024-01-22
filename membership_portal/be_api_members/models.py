@@ -11,11 +11,19 @@ martial_Status = (
     ('Single','Single'),
 )
 
+<<<<<<< HEAD
 status = (
     (0,'Pending'),
     (1,'Active'),
     (2,'Hidden'),
 )
+=======
+# status = (
+#     ('A','Active'),
+#     ('NA','Not Active'),
+#     ('IC',"Incomplete")
+# )
+>>>>>>> 40112861ef1ced35855d1aaf557e4682a4d24128
 
 interests = (
     ('1', 'Organization & Effectiveness'),
@@ -27,13 +35,24 @@ interests = (
     ('7', 'Women in Business'),
     ('8', 'Young Professionals'), 
 )
+
+benefit_status = (
+    ('0', 'pending'),
+    ('1', 'approved'),
+    ('2', 'hidden')
+)
+
 features = (
     ("B", "Benefits"),
     ("E", "Events"),
     ("N", "Newsletters"),
 )
 
-
+status=(
+    (0,'Pending'),
+    (1,'Active'),
+    (2,'Hidden'),
+)
 class Country(models.Model):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=20)
@@ -66,13 +85,12 @@ class Organization(models.Model):
     address_one = models.CharField(max_length=100) #,blank=False, null=False
     address_two = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=False, null=False)
-
-    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False,db_index=False,db_constraint=False, null=False, default=837)
-
+    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False, null=False,db_index=False,db_constraint=False, default=837)
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
-    status = models.CharField(max_length=1,choices=status,default=status[0][0])
+    status = models.IntegerField(choices=status,default=status[0][0])
+    longname = models.CharField(max_length=100, blank=True, null=True)
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
@@ -119,7 +137,7 @@ class Profile(models.Model):
     # related_query_name="%(app_label)s_%(class)ss_nationality_name" 
     # ,default = 837, related_name="nationality_namee"
     gender = models.CharField(choices = (('Male','Male'),('Female','Female')))
-    organization = models.ForeignKey(Organization,blank=True,null=True, on_delete = models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete = models.CASCADE)
     role = models.IntegerField(
         default=4,
         validators = [
@@ -129,7 +147,11 @@ class Profile(models.Model):
     )
     job_title = models.CharField(max_length = 100)
     status = models.IntegerField(
+<<<<<<< HEAD
         choices = status,null=False,blank=False,
+=======
+        choices = status,
+>>>>>>> 40112861ef1ced35855d1aaf557e4682a4d24128
         default = status[0][0]
     )
 
@@ -159,6 +181,10 @@ class Benefit(models.Model):
     expiry_date = models.DateField()
     # Register user to the benefit once they have used it
     used_by_user = models.ManyToManyField(Profile, related_name = 'used_benefit', blank = True)
+    status = models.CharField(
+        choices = benefit_status,
+        default = benefit_status[0][0]
+    )
 
     def __str__(self):
         return  f'{self.title} by {self.organization}'
@@ -179,3 +205,26 @@ class Benefit(models.Model):
         else:
             print('user already exist')
             raise ValidationError("Benefit has already been used by this user.")
+
+
+class Event(models.Model):
+    # Benefit().clean()
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
+    location = models.CharField(max_length=100)
+    sponsor = models.ForeignKey(Organization, on_delete = models.CASCADE, default=1)
+    start_date = models.DateTimeField('Event Start Date')
+    end_date = models.DateTimeField('Event End Date')
+    attendees = models.ManyToManyField(Profile)
+
+    # def clean(self):
+    #     if self.start_date < timezone.now().date():
+    #         raise ValidationError({'start_date': 'Start date can not be before today.'})
+    #     elif self.end_date < self.start_date:
+    #         raise ValidationError({'end_date': 'end date before the start date.'})
+
+        
+
+# class TestModel(models.Model):
+#     name = models.CharField(max_length=200)
+

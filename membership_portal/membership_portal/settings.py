@@ -161,7 +161,7 @@ REST_FRAMEWORK = {
     ],
         'DEFAULT_PERMISSION_CLASSESS': 'rest_framework.permissions.AllowAny',
     # Change this back to 5 minutes for production
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
 
 MEDIA_URL = 'membership_portal/media/'
@@ -183,3 +183,10 @@ CORS_ALLOW_CREDENTIALS = True
 #     'http://localhost:3000', 
 #     'http://127.0.0.1:3000',
 # ]
+    # Change this back to 5 minutes for production
+    # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
+# }
+ 
+
+MEDIA_URL = 'membership_portal/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'membership_portal/media/')
