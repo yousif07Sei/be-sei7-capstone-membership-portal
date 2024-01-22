@@ -50,7 +50,16 @@ class PlanDetail(DetailView):
 
 class PlanCreate(CreateView):
     model= Plan
-   
+    fields= '__all__'
+    success_url = '/plan/'
+
+    def get_context_data(self, **kwargs):
+        print("some")
+        context = super().get_context_data(**kwargs)
+        plan_feature_list = PlanFeature.objects.all()
+        print(plan_feature_list)
+        context["planfeature"] = plan_feature_list
+        return context
 
 
 
