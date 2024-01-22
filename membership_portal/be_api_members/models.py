@@ -33,6 +33,11 @@ features = (
     ("N", "Newsletters"),
 )
 
+organization_status=(
+    ('0','Pending'),
+    ('1','Active'),
+    ('2','Not Active'),
+)
 class Country(models.Model):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=20)
@@ -71,6 +76,7 @@ class Organization(models.Model):
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
+    status = models.CharField(max_length=1,choices=organization_status,default=organization_status[0][0])
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
