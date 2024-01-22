@@ -132,7 +132,23 @@ def benefit_create(request):
     else:
         return JsonResponse(serializer.errors)
 
-
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def benefit_update(request):
+    benefit_id = request.query_params['id']
+    try:
+        benefit = Benefit.objects.get(pk = int(benefit_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find benefit with id {benefit_id}'})
+    data = JSONParser().parse(request)
+    serializer = BenefitRESTSerializers(benefit, data = data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating benefit'})
+    
 # @csrf_exempt
 # @api_view(['POST'])
 # @permission_classes([permissions.IsAuthenticated])
@@ -147,4 +163,3 @@ def benefit_create(request):
 #     # else:
 #     #     return JsonResponse({'message': 'Error: failed to create new benefit'})
 #     return JsonResponse(serializer, safe=False)
-
