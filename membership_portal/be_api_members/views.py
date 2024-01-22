@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.http import JsonResponse
@@ -7,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from .models import Benefit, Profile
 from .serializers import BenefitSerializer
+import qrcode
 
 @csrf_exempt
 @api_view(['GET'])
@@ -66,5 +68,16 @@ def benefit_detail(request):
     return JsonResponse(response, safe = False)
 
 # generate QR code api
+# TODO... modify the function to generate QR link based on frontend url and benefit id
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def benefit_qrcode(request):
-    pass
+    benefit_url = 'http://example.com/benefit/1283'
+    image_dir = settings.MEDIA_ROOT + '/'
+    if image_dir + 'test1.png':
+        return JsonResponse({'messge': 'qr code exists'})
+    else:
+        img = qrcode.make(benefit_url)
+        img.save(image_dir + 'test.png')
+        return JsonResponse({'messge': 'qr code saved'})
