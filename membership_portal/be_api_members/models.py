@@ -181,3 +181,20 @@ class Benefit(models.Model):
         else:
             print('user already exist')
             raise ValidationError("Benefit has already been used by this user.")
+
+class Event(models.Model):
+    # Benefit().clean()
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
+    location = models.CharField(max_length=100)
+    sponsor = models.ForeignKey(Organization, on_delete = models.CASCADE, default=1)
+    start_date = models.DateTimeField('Event Start Date')
+    end_date = models.DateTimeField('Event End Date')
+    attendees = models.ManyToManyField(Profile)
+
+    # def clean(self):
+    #     if self.start_date < timezone.now().date():
+    #         raise ValidationError({'start_date': 'Start date can not be before today.'})
+    #     elif self.end_date < self.start_date:
+    #         raise ValidationError({'end_date': 'end date before the start date.'})
+

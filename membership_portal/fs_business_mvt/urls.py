@@ -25,6 +25,12 @@ urlpatterns = [
     path('plan/',views.PlanList.as_view(),name='plan_index'),
     path('plan/create/',views.PlanCreate.as_view(),name='plan_create'),
     path('plan/<int:pk>/update/',views.PlanUpdate.as_view(),name='plan_update'),
-    path('plan/<int:pk>/delete/',views.PlanDelete.as_view(),name='plan_delete')
+    path('plan/<int:pk>/delete/',views.PlanDelete.as_view(),name='plan_delete'),
+
+    path('events/',views.EventList.as_view(),name='events_index'),
+    path('events/create/',views.EventCreate.as_view(),name='events_create'),
+    path('events/<int:pk>/update/',views.EventUpdate.as_view(),name='events_update'),
+    path('events/<int:pk>/delete/',views.EventDelete.as_view(),name='events_delete')
+
 
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic import ListView, DetailView
-from be_api_members.models import Organization , Country , Plan, PlanFeature , Profile
+from be_api_members.models import Organization , Country , Plan, PlanFeature , Profile , Event
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -134,6 +134,42 @@ def remove_member(request,user_id,organization_id):
     # print(Profile.objects.get(id=user_id).organization)
     print(obj.organization)
     return redirect('/organization/'+str(organization_id)+'/')
+
+class EventList(ListView):
+    model=Event
+
+
+class EventDetail(DetailView):
+    model=Event
+    
+
+
+class EventCreate(CreateView):
+    model= Event
+    fields= '__all__'
+    success_url = '/events/'
+
+    # def get_context_data(self, **kwargs):
+    #     print("some")
+    #     context = super().get_context_data(**kwargs)
+    #     plan_feature_list = PlanFeature.objects.all()
+    #     print(plan_feature_list)
+    #     context["planfeature"] = plan_feature_list
+    #     return context
+
+
+
+class EventUpdate(UpdateView):
+    model= Event
+    fields= '__all__'
+    
+    
+
+
+
+class EventDelete(DeleteView):
+    model= Event
+    success_url = '/events/'
 
 class ManageLogin(LoginView):
     template_name = 'fs_business_mvt/templates/registration/login.html'
