@@ -67,6 +67,14 @@ class PlanUpdate(UpdateView):
     model= Plan
     fields= '__all__'
     
+    def get_context_data(self, **kwargs):
+        print("some")
+        context = super().get_context_data(**kwargs)
+        plan_feature_list = PlanFeature.objects.all()
+        print(plan_feature_list)
+        context["planfeature"] = plan_feature_list
+        return context
+    
 
 
 
