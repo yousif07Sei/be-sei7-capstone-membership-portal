@@ -12,9 +12,9 @@ martial_Status = (
 )
 
 status = (
-    ('0','Pending'),
-    ('1','Active'),
-    ('2','Hidden'),
+    (0,'Pending'),
+    (1,'Active'),
+    (2,'Hidden'),
 )
 
 interests = (
@@ -128,8 +128,8 @@ class Profile(models.Model):
         ]
     )
     job_title = models.CharField(max_length = 100)
-    status = models.CharField(
-        choices = status,
+    status = models.IntegerField(
+        choices = status,null=False,blank=False,
         default = status[0][0]
     )
 
