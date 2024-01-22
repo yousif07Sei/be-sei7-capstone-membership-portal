@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 import os #environment of django
@@ -176,3 +177,6 @@ CORS_ALLOW_CREDENTIALS = True
 #     'http://localhost:3000', 
 #     'http://127.0.0.1:3000',
 # ]
+    # Change this back to 5 minutes for production
+    # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
+# }
