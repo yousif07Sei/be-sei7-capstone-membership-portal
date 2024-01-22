@@ -11,11 +11,11 @@ martial_Status = (
     ('Single','Single'),
 )
 
-status = (
-    ('A','Active'),
-    ('NA','Not Active'),
-    ('IC',"Incomplete")
-)
+# status = (
+#     ('A','Active'),
+#     ('NA','Not Active'),
+#     ('IC',"Incomplete")
+# )
 
 interests = (
     ('1', 'Organization & Effectiveness'),
@@ -40,6 +40,11 @@ features = (
     ("N", "Newsletters"),
 )
 
+status=(
+    ('0','Pending'),
+    ('1','Active'),
+    ('2','Not Active'),
+)
 class Country(models.Model):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=20)
@@ -72,12 +77,11 @@ class Organization(models.Model):
     address_one = models.CharField(max_length=100) #,blank=False, null=False
     address_two = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=False, null=False)
-
-    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False,db_index=False,db_constraint=False, null=False, default=837)
-
+    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False, null=False,db_index=False,db_constraint=False, default=837)
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
     interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
+    status = models.CharField(max_length=1,choices=status,default=status[0][0])
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
@@ -124,7 +128,7 @@ class Profile(models.Model):
     # related_query_name="%(app_label)s_%(class)ss_nationality_name" 
     # ,default = 837, related_name="nationality_namee"
     gender = models.CharField(choices = (('Male','Male'),('Female','Female')))
-    organization = models.ForeignKey(Organization,blank=True,null=True, on_delete = models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete = models.CASCADE)
     role = models.IntegerField(
         default=4,
         validators = [

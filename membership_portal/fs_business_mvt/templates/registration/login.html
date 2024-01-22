@@ -3,7 +3,7 @@
 
 <h1>Log In</h1>
 
-<form method="POST" action="{% url 'login' %}">
+<form method="POST" action="{% url 'bussines_portal_app:login' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="hidden" name="next" value="{{ next }}">

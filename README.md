@@ -1,5 +1,5 @@
 ## Dependencies
-Install REST and simple jwt
+PIP install pakacges: 
 ```
-    pip install django_rest_framework djangorestframework_simplejwt
+pip install django_rest_framework djangorestframework_simplejwt django-cors-headers
 ```

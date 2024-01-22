@@ -14,6 +14,7 @@
         <th>Phone</th>
         <th>Email</th>
         <th>Country</th>
+        <th>Status</th>
         <!-- <th>Status</th> -->
         <!-- <th>Reg. Start</th> -->
         <th>Action</th>
@@ -29,6 +30,13 @@
 <td>{{org.phone_number}}</td>
 <td>{{org.email_address}}</td>
 <td>{{org.country.name}}</td>
+<td>{% if org.status == '0' %}
+  Pending
+  {% elif org.status == '1' %}
+  Active
+  {% elif org.status == '2' %}</td>
+  Inactive
+  {% endif %}</td>
 <!-- <td>org.</td> -->
 <!-- <td>org.</td> -->
 <td>

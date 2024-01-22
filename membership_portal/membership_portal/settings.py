@@ -138,6 +138,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # Add this variable to specify where successful logins should redirect to
+LOGIN_URL = 'bussines_portal_app:login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -182,3 +183,10 @@ CORS_ALLOW_CREDENTIALS = True
 #     'http://localhost:3000', 
 #     'http://127.0.0.1:3000',
 # ]
+    # Change this back to 5 minutes for production
+    # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
+# }
+ 
+
+MEDIA_URL = 'membership_portal/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'membership_portal/media/')

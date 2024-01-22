@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic import ListView, DetailView
 from be_api_members.models import Organization , Country , Plan, PlanFeature , Profile
-
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -34,6 +36,7 @@ class OrganizationUpdate(UpdateView):
         obj.zip_code = request.POST.get('zip_code')
         obj.content_info = request.POST.get('content_info')
         obj.interests = request.POST.get('interests')
+        obj.status = request.POST.get('status')
         # Save the updated object
         obj.save()
         return redirect('bussines_portal_app:organization_index')
@@ -50,7 +53,16 @@ class PlanDetail(DetailView):
 
 class PlanCreate(CreateView):
     model= Plan
-   
+    fields= '__all__'
+    success_url = '/plan/'
+
+    def get_context_data(self, **kwargs):
+        print("some")
+        context = super().get_context_data(**kwargs)
+        plan_feature_list = PlanFeature.objects.all()
+        print(plan_feature_list)
+        context["planfeature"] = plan_feature_list
+        return context
 
 
 
@@ -73,8 +85,13 @@ class OrganizationDelete(DeleteView):
 def OrganizationDetail(request,pk):
     organization = Organization.objects.get(id = pk)
     users = Profile.objects.filter(organization = pk)
-    
-    return render(request,'be_api_members/organization_detail.html' , {'organization':organization, 'users':users})
+    usersList = []
+    print(users[0].status)
+    for i in users:
+        if i.status != 2:
+            usersList.append(i)
+            
+    return render(request,'be_api_members/organization_detail.html' , {'organization':organization, 'users':usersList})
     
 class ProfileUpdate(UpdateView):
     model = Profile
@@ -102,7 +119,24 @@ class CountryList(ListView):
 
 def remove_member(request,user_id,organization_id):
     # Profile.objects.filter(id=user_id).values()[0]
-    obj =  Profile.objects.get(id=user_id)
-    obj.organization = None
+    obj = get_object_or_404(Profile,pk=user_id)
+    # Profile.objects.get(id=user_id).organization = None
+    obj.status = 2
+    obj.save()
+    # print(Profile.objects.get(id=user_id).organization)
     print(obj.organization)
     return redirect('/organization/'+str(organization_id)+'/')
+
+class ManageLogin(LoginView):
+    template_name = 'fs_business_mvt/templates/registration/login.html'
+    
+    def form_valid(self, form):
+        username = form.cleaned_data['username']
+        user = get_object_or_404(User,username = username)
+        profile = get_object_or_404(Profile,user_id = user.id)
+        print("user",profile.first_name)
+        if profile.role <= 2:
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+    
