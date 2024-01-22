@@ -27,6 +27,13 @@ interests = (
     ('7', 'Women in Business'),
     ('8', 'Young Professionals'), 
 )
+
+benefit_status = (
+    ('0', 'pending'),
+    ('1', 'approved'),
+    ('2', 'hidden')
+)
+
 features = (
     ("B", "Benefits"),
     ("E", "Events"),
@@ -161,6 +168,10 @@ class Benefit(models.Model):
     expiry_date = models.DateField()
     # Register user to the benefit once they have used it
     used_by_user = models.ManyToManyField(Profile, related_name = 'used_benefit', blank = True)
+    status = models.CharField(
+        choices = benefit_status,
+        default = benefit_status[0][0]
+    )
 
     def __str__(self):
         return  f'{self.title} by {self.organization}'
@@ -182,6 +193,7 @@ class Benefit(models.Model):
             print('user already exist')
             raise ValidationError("Benefit has already been used by this user.")
 
+
 class Event(models.Model):
     # Benefit().clean()
     title = models.CharField(max_length=100)
@@ -197,4 +209,9 @@ class Event(models.Model):
     #         raise ValidationError({'start_date': 'Start date can not be before today.'})
     #     elif self.end_date < self.start_date:
     #         raise ValidationError({'end_date': 'end date before the start date.'})
+
+        
+
+# class TestModel(models.Model):
+#     name = models.CharField(max_length=200)
 
