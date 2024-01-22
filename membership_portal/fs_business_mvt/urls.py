@@ -21,6 +21,7 @@ urlpatterns = [
     # path('plan/feature/<int:pk>/delete/',views.PlanDelete.as_view(),name='plan_feature_delete'),
     # yousif added the plan
     path('plan/',views.PlanList.as_view(),name='plan_index'),
+    path('plan/create/',views.PlanCreate.as_view(),name='plan_create'),
     path('plan/<int:pk>/update/',views.PlanUpdate.as_view(),name='plan_update'),
     path('plan/<int:pk>/delete/',views.PlanDelete.as_view(),name='plan_delete')
 
