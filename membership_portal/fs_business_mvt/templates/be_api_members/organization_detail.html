@@ -41,11 +41,11 @@
     member
 {% endif %}</td>
 <td>{{ user.job_title }}</td>
-<td>{% if user.status == 'A' %}
+<td>{% if user.status == '0' %}
     Active
-    {% elif user.status == 'NA' %}
+    {% elif user.status == '1' %}
     Not Active
-    {% elif user.status == 'IC' %}</td>
+    {% elif user.status == '2' %}</td>
     Incomplete
     {% endif %}
     <td>

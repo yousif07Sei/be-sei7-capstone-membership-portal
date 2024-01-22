@@ -22,8 +22,9 @@
                     </li>
                 </ul>
                     <ul class="right">
-                    {% if user.is_authenticated %}
-                    <li>Welcome {{user.username}}</li>
+                    {% if user.is_authenticated  %}
+                      
+                    <li>Welcome {{user.profile.first_name}} {{user.profile.last_name}}</li>
 
                     <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                         {% csrf_token %}
@@ -34,10 +35,8 @@
                     <li><a href="{% url 'bussines_portal_app:profile_index' %}">Users</a></li>
                     
                     <li><a href="{% url 'bussines_portal_app:plan_index' %}">Plans</a></li>
-                    <li><a href="{% url 'bussines_portal_app:plan_create' %}">Plan Create</a></li>
-            
-                   
 
+                    <li><a href="{% url 'bussines_portal_app:plan_create' %}">Plan Create</a></li>
 
                     {% else %}
                     <li><a href="{% url 'login' %}">Log in</a></li>
