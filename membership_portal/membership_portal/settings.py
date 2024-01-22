@@ -185,3 +185,7 @@ CORS_ALLOW_CREDENTIALS = True
     # Change this back to 5 minutes for production
     # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100)
 # }
+ 
+
+MEDIA_URL = 'membership_portal/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'membership_portal/media/')
