@@ -81,3 +81,5 @@ def benefit_qrcode(request):
         img = qrcode.make(benefit_url)
         img.save(image_dir + 'test.png')
         return JsonResponse({'messge': 'qr code saved'})
+def benefit_qrcode(request):
+    pass
