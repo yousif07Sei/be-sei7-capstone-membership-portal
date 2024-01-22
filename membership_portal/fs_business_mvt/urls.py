@@ -1,5 +1,6 @@
 from django.urls import path,include
 from . import views
+from .views import ManageLogin
 
 
 app_name="bussines_portal_app"
@@ -13,8 +14,9 @@ urlpatterns = [
     
     path('profile/<int:pk>/update',views.ProfileUpdate.as_view(),name='profile_update'),
     path('profile/',views.ProfileList.as_view(),name='profile_index'),
-    path('organization/<int:user_id>/remove/<int:organization_id>',views.remove_member,name='remove_member')
+    path('organization/<int:user_id>/remove/<int:organization_id>',views.remove_member,name='remove_member'),
 
+    path('login/', ManageLogin.as_view(), name='login'),
 
  # yousif added the planFeature
     # path('plan/feature/',views.PlanList.as_view(),name='plan_feature_index'),
