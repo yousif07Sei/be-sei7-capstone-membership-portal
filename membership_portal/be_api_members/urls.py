@@ -10,7 +10,8 @@ urlpatterns = [
     path('benefit/delete', views.benefit_delete, name = 'benefit_delete'),
     path('benefit/create', views.benefit_create, name = 'benefit_create'),
     path('benefit/update', views.benefit_update, name = 'benefit_update'),  
-    path('login/',views.LoginAPIView.as_view(),name='login')  
+    path('user/',views.user_details,name='user_details')
+    # path('login/',views.LoginAPIView,name='login')  
     # Test model
     # path('test/create', views.test_create, name = 'test_create'),
 ]

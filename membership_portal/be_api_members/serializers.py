@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Benefit, Organization
+from .models import Benefit, Organization, User, Profile
 # from .models import TestModel
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -37,9 +37,23 @@ class BenefitRESTSerializers(serializers.Serializer):
         instance.save()
         return instance
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField(write_only = True)
+class ProfileSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id']
+        
+class UserSerializer(serializers.ModelSerializer):
+     profile = ProfileSerializer(required = True)
+     class Meta:
+        model = User
+        fields = ['profile', 'username']
+    # id = serializers.IntegerField()
+    # username = serializers.CharField()
+    # profile = serializers.DictField()
+    
+# class LoginSerializer(serializers.Serializer):
+#     username = serializers.CharField()
+#     password = serializers.CharField(write_only = True)
 
 # class TestModelSerializer(serializers.ModelSerializer):
 #     # name = serializers.CharField(required = True)
