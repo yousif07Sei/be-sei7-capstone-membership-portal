@@ -25,6 +25,9 @@ urlpatterns = [
     path('plan/create', views.plan_create, name = 'plan_create'),
     path('plan/update', views.plan_update, name = 'plan_update'),
 
+     # API endpoints for Events
+    path('event/list', views.event_list, name = 'event_list'),
+
 
     path('user/',views.user_details,name='user_details'),
     path('user/create/',views.user_create,name='user_create')

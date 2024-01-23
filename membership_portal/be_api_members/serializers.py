@@ -1,6 +1,6 @@
 from rest_framework import serializers
+from .models import Benefit, Organization, User, Profile, Plan, Event, Interest
 
-from .models import Benefit, Organization, User, Profile, Plan, Interest
 # from .models import TestModel
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -165,3 +165,7 @@ class PlanRESTSerializers(serializers.Serializer):
 
     # def create(self, validated_data):
     #     return TestModel.objects.create(**validated_data)
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['title','description','location','sponsor','start_date','end_date']
