@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
-]
+    "bootstrap4",
+    "bootstrap_datepicker_plus",
+    ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

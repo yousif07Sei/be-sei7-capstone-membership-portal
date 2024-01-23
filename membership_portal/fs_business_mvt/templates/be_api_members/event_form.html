@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{%if object%}
+<h1>Edit {{object.title}}</h1>
+{%else%}
+<h1>Create Event</h1>
+{%endif%}
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }} 
+
+<form action="" method="POST" >
+  {% csrf_token %}
+  {% bootstrap_form form %}
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<style>
+  .form-group{
+    margin-bottom: 1.5rem;
+  }
+  .form-group input{
+    padding-top: 1rem;
+  }
+</style>
+<!-- <form action="" method="POST" >
+    {% csrf_token %}
+    {% bootstrap_form form %}
+        <div class="mb-3">
+      <label  class="form-label">title</label>
+      <input type="text" value="{{object.title}}" class="form-control" name='title' >
+    </div> 
+      <div class="mb-3">
+        <label  class="form-label">Description</label>
+        <input type="text" class="form-control"
+        name='description' value="{{ object.description}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Location</label>
+        <input type="text" class="form-control"
+        name='location' value="{{ object.location}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Sponsor</label>
+        <input type="text" class="form-control"
+        name='sponsor' value="{{ object.sponsor}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Starting Date</label>
+        <input id="id_start_date" type="text" class="form-control" name='start_date' value="{{ object.start_date}}">
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">End Date</label>
+        <input id="id_end_date" type="text" class="form-control" name='end_date' value="{{ object.end_date}}">
+      </div>
+      <!-- {{ planfeature }} -->
+      <!-- {{ form.plan_feature }} -->
+
+      <!-- <div class="mb-3">
+        <label  class="form-label">Features</label>
+        <select name='plan_feature' class="form-control" multiple="multiple">
+            {% for feature in planfeature %}
+                <option value="{{ feature.id }}">
+                    {{ feature }}
+                </option>
+            {% endfor %}
+        </select>
+      </div> -->
+    
+      
+     
+      
+     
+      
+     
+     
+    <!-- <button type="submit" class="btn btn-primary">Submit</button>
+  </form> -->
+
+
+{%  endblock  %}

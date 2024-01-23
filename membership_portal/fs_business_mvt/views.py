@@ -5,6 +5,10 @@ from be_api_members.models import Organization , Country , Plan, PlanFeature , P
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django import forms
+from django.forms import ModelForm
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from datetime import datetime
 
 # Create your views here.
 def home(request):
@@ -143,25 +147,35 @@ class EventDetail(DetailView):
     model=Event
     
 
+# def add_event(request, event_id):
+#     event_form = EventForm(request.POST)
+
+#     if event_form.is_valid():
+#         new_event = event_form.save(commit=False)
+#         new_event.event_id = event_id
+#         new_event.save()
+        # return redirect('cats_detail', cat_id)
+   
+
 
 class EventCreate(CreateView):
-    model= Event
-    fields= '__all__'
-    success_url = '/events/'
-
-    # def get_context_data(self, **kwargs):
-    #     print("some")
-    #     context = super().get_context_data(**kwargs)
-    #     plan_feature_list = PlanFeature.objects.all()
-    #     print(plan_feature_list)
-    #     context["planfeature"] = plan_feature_list
-    #     return context
+    model = Event
+    fields = '__all__'
+    
+    template_name = 'be_api_members/event_form.html'  # replace with your actual template name
+    success_url = '/events/'  # replace with your actual success URL 
+    def get_form(self):
+        form = super().get_form()
+        form.fields['start_date'].widget = DateTimePickerInput()
+        form.fields['end_date'].widget = DateTimePickerInput(range_from="start_date")
+        return form
 
 
 
 class EventUpdate(UpdateView):
     model= Event
-    fields= '__all__'
+    fields= ['title','description','location','sponsor','start_date','end_date']
+    success_url = '/events/'
     
     
 
