@@ -8,8 +8,8 @@ class CountryAdmin(admin.ModelAdmin):
     search_help_text = 'Search by Country Name'
 
 class BenefitAdmin(admin.ModelAdmin):
-    exclude = ('used_by_user', )
-    # pass
+    # exclude = ('used_by_user', )
+    pass
 
 # Register your models here.
 

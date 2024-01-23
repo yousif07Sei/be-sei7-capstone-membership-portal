@@ -220,7 +220,7 @@ csrf_exempt
 @permission_classes([permissions.IsAuthenticated])
 def organization_list(request):
     '''
-    Get list of all registered organizations
+    Get list of all registered organizations 
     '''
     try:
         organization_list = Organization.objects.all()

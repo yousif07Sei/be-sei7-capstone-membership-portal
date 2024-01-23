@@ -118,6 +118,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length = 200)
     phoneNumber = models.CharField(max_length = 30)
     email = models.EmailField(max_length = 100)
+    phoneNumber = models.CharField(max_length= 30, default = "")
     # TO BE ADDED WHEN THE SALUTAION DATA IS AVAILABLE / comment by : Hussain
     # salutation = models.OneToOneField(Salutation,on_delete=models.CASCADE)
     martial = models.CharField(
@@ -170,7 +171,7 @@ class Benefit(models.Model):
     expiry_date = models.DateField()
     # Register user to the benefit once they have used it
     used_by_user = models.ManyToManyField(Profile, related_name = 'used_benefit', blank = True)
-    status = models.CharField(
+    status = models.IntegerField(
         choices = status,
         default = status[0][0]
     )
