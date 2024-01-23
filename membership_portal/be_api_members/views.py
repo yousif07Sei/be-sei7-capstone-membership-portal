@@ -10,12 +10,16 @@ from rest_framework import permissions
 from .models import *
 # from .models import TestModel
 
+from rest_framework.response import Response
+import random
 from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer
+
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
 from rest_framework.decorators import parser_classes
 # from .serializers import TestModelSerializer
 from django.contrib.auth.views import LoginView
+
 import qrcode
 import os
 from dotenv import load_dotenv
@@ -139,7 +143,7 @@ def benefit_create(request):
     else:
         return JsonResponse(serializer.errors)
 
-csrf_exempt
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def benefit_update(request):
@@ -168,6 +172,42 @@ def user_details(request):
     
     serializer = UserSerializer(user)
     return JsonResponse(serializer.data)
+
+@csrf_exempt
+@api_view(['POST'])
+def user_create(request):
+    password = request.data.get('password')
+    email = request.data.get('email')
+    if Profile.objects.filter(email=email).exists():
+        return JsonResponse({"response":"fail"})
+    role = 3
+    dob = request.data.get('dob')
+    martial = request.data.get('martial')
+    gender = request.data.get('gender')
+    first_name = request.data.get('first_name')
+    last_name = request.data.get('last_name')
+    image = ""
+    phoneNumber = request.data.get('phoneNumber')
+    randInt = random.randint(1000,9999)
+    username = first_name+"-"+last_name+str(randInt)
+    # Create user
+    user = User.objects.create_user(username=username, password=password)
+    data = Profile.objects.create(email=email, user=user, role=role, first_name=first_name, last_name=last_name,dob=dob,martial=martial,gender=gender, image=image , phoneNumber=phoneNumber)
+    serializer = UserSerializer(user)
+    return JsonResponse(serializer.data)
+    # return Response({'access_token': access_token, 'refresh_token': str(refresh) }, status=status.HTTP_201_CREATED)
+    
+# @csrf_exempt
+# @api_view(['POST'])
+# def user_create(request):
+#     data = JSONParser.parse(request)
+#     serializer = UserSerializer(data=data)
+#     return JsonResponse(data)
+    # fn = request.body.first_name
+    # ln = request.body.last_name
+    # email = request.body.email
+    # password = request.body.password
+    
 # @csrf_exempt
 # @api_view(['POST'])
 # def LoginAPIView(request):

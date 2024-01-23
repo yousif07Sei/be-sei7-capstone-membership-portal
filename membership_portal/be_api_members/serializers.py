@@ -85,6 +85,7 @@ class OrganizationRESTSerializers(serializers.Serializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
@@ -92,9 +93,15 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_organization_name(self, obj):
         return obj.organization.name if obj.organization else None
         
+    def create(self, validated_data):
+        User.objects.create()
+        return Profile.objects.create(**validated_data)
 class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(required = True)
-    class Meta:
+     profile = ProfileSerializer(required = True)
+     
+     def create(self, validated_data):
+        return User.objects.create(**validated_data)
+     class Meta:
         model = User
         fields = ['profile', 'username']
     # id = serializers.IntegerField()
