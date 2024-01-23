@@ -12,7 +12,7 @@ from .models import *
 
 from rest_framework.response import Response
 import random
-from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer, EventSerializer
 
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
@@ -330,7 +330,7 @@ def plan_create(request):
     else:
         return JsonResponse(serializer.errors)
 
-csrf_exempt
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def plan_update(request):
@@ -361,3 +361,16 @@ def plan_update(request):
 #     # else:
 #     #     return JsonResponse({'message': 'Error: failed to create new benefit'})
 #     return JsonResponse(serializer, safe=False)
+@csrf_exempt
+@api_view(['GET'])
+def event_list(request):
+    '''
+    Get list of all Events
+    '''
+    try:
+        event_list = Event.objects.all()
+        serializer = EventSerializer(event_list, many = True)
+        response = serializer.data
+    except ValidationError as e:
+        response = e.message
+    return JsonResponse(response, safe = False)
