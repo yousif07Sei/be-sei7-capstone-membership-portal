@@ -17,16 +17,21 @@ status = (
     (2,'Hidden'),
 )
 
-interests = (
-    ('1', 'Organization & Effectiveness'),
-    ('2', 'Projects & Construction'),
-    ('3', 'Banking & Finance'),
-    ('4', 'Hospitality, Leisure & Tourism'),
-    ('5', 'ICT'),
-    ('6', 'Legal'),
-    ('7', 'Women in Business'),
-    ('8', 'Young Professionals'), 
-)
+# interests = (
+#     ('1', 'Organization & Effectiveness'),
+#     ('2', 'Projects & Construction'),
+#     ('3', 'Banking & Finance'),
+#     ('4', 'Hospitality, Leisure & Tourism'),
+#     ('5', 'ICT'),
+#     ('6', 'Legal'),
+#     ('7', 'Women in Business'),
+#     ('8', 'Young Professionals'), 
+# )
+
+class Interest(models.Model):
+    interest = models.CharField(max_length=50)
+    def __str__(self):
+        return self.interest
 
 benefit_status = (
     ('0', 'pending'),
@@ -80,7 +85,8 @@ class Organization(models.Model):
     country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False, null=False,db_index=False,db_constraint=False, default=837)
     zip_code = models.IntegerField(blank=False, null=False)
     content_info = models.TextField(max_length=250, blank=False, null=False)
-    interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
+    # interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
+    interests = models.ManyToManyField(Interest)
     status = models.IntegerField(choices=status,default=status[0][0])
     longname = models.CharField(max_length=100, blank=True, null=True)
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)

@@ -2,7 +2,8 @@
 {% load static %}
 {% block content %}
 
-<h1>Edit {{object.name}}</h1>
+
+<!-- <h1>Edit {{object.name}}</h1> -->
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
@@ -18,7 +19,7 @@
       <div class="mb-3">
         <label  class="form-label">CR Number</label>
         <input type="text" class="form-control"
-        name=' cr_number ' value="{{ object.cr_number}}" disabled>
+        name=' cr_number ' value="{{ object.cr_number}}">
       </div>
       <div class="mb-3">
         <label  class="form-label">Phone Number</label>
@@ -72,7 +73,7 @@
         </div>
         <div class="mb-3">
             <label  class="form-label">Interests</label>
-            <select name=' interests ' class="form-control" valu="{{object.interests}">
+            <select name=' interests ' class="form-control" valu="{{object.interests}}" multiple="multiple">
                 {% for i in form.interests %}
                     <option value="{{ i.pk }}">
                         {{ i }}
@@ -82,7 +83,7 @@
           </div>
           <div class="mb-3">
             <label  class="form-label">Status</label>
-            <select name=' status ' class="form-control" valu="{{object.status}">
+            <select name=' status ' class="form-control" valu="{{object.status}}">
                 {% for st in form.status %}
                         {{ st }}
                 {% endfor %}

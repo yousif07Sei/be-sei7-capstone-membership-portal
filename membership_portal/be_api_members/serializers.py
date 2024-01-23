@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Benefit, Organization, User, Profile, Plan
+from .models import Benefit, Organization, User, Profile, Plan, Interest
 # from .models import TestModel
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -45,7 +45,15 @@ class BenefitRESTSerializers(serializers.Serializer):
         instance.save()
         return instance
     
+class InterestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Interest
+        fields = '__all__'
+
 class OrganizationRESTSerializers(serializers.Serializer):
+
+    interests = InterestSerializer(many=True)
+
     name = serializers.CharField(required = True)
     logo = serializers.ImageField(required = False)
     cr_number = serializers.CharField(required = True)
@@ -59,7 +67,7 @@ class OrganizationRESTSerializers(serializers.Serializer):
     city = serializers.CharField(required = True)
     country_id = serializers.IntegerField(required = True)
     content_info = serializers.CharField(required = True)
-    interests = serializers.CharField()
+    # interests = serializers.ManyRelatedField()
 
     def create(self, validated_data):
         return Organization.objects.create(**validated_data)
@@ -78,11 +86,26 @@ class OrganizationRESTSerializers(serializers.Serializer):
         instance.city = validated_data.get('city', instance.city)
         instance.country_id = validated_data.get('country_id', instance.country_id)
         instance.content_info = validated_data.get('content_info', instance.content_info)
+
         instance.interests = validated_data.get('interests', instance.interests)
+
+        # interests_data = validated_data.get('interests', [])
+        # instance.interests.set(interests_data)
+        
         instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
 
+class SignUpProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id']
+        
+    def create(self, validated_data):
+        User.objects.create()
+        return Profile.objects.create(**validated_data)
+    
 class ProfileSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
 
@@ -97,7 +120,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         User.objects.create()
         return Profile.objects.create(**validated_data)
 class UserSerializer(serializers.ModelSerializer):
-     profile = ProfileSerializer(required = True)
+     profile = SignUpProfileSerializer(required = True)
      
      def create(self, validated_data):
         return User.objects.create(**validated_data)

@@ -14,6 +14,10 @@ from datetime import datetime
 def home(request):
     return render(request ,'home.html')
 
+class OrganizationCreate(CreateView):
+    model = Organization
+    fields = '__all__'
+
 class OrganizationList(ListView):
     model = Organization
 
