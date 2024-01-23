@@ -187,12 +187,13 @@ def user_create(request):
     first_name = request.data.get('first_name')
     last_name = request.data.get('last_name')
     image = ""
+    job_title = ""
     phoneNumber = request.data.get('phoneNumber')
     randInt = random.randint(1000,9999)
     username = first_name+"-"+last_name+str(randInt)
     # Create user
     user = User.objects.create_user(username=username, password=password)
-    data = Profile.objects.create(email=email, user=user, role=role, first_name=first_name, last_name=last_name,dob=dob,martial=martial,gender=gender, image=image , phoneNumber=phoneNumber)
+    data = Profile.objects.create(email=email, user=user, role=role, first_name=first_name, last_name=last_name,dob=dob,martial=martial,gender=gender, image=image, job_title=job_title, phoneNumber=phoneNumber)
     serializer = UserSerializer(user)
     return JsonResponse(serializer.data)
     # return Response({'access_token': access_token, 'refresh_token': str(refresh) }, status=status.HTTP_201_CREATED)
