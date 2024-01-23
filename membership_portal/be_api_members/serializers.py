@@ -27,6 +27,10 @@ class BenefitRESTSerializers(serializers.Serializer):
         instance.save()
         return instance
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only = True)
+
 # class TestModelSerializer(serializers.ModelSerializer):
 #     # name = serializers.CharField(required = True)
 #     class Meta:
