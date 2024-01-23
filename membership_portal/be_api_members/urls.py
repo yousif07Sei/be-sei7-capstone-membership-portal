@@ -18,6 +18,7 @@ urlpatterns = [
     path('organization/detail/', views.organization_detail, name = 'organization_detail'),
     path('organization/delete', views.organization_delete, name = 'organization_delete'),
     path('organization/create', views.organization_create, name = 'organization_create'),
+    path('organization/update', views.organization_update, name = 'organization_update'),
 
     path('user/',views.user_details,name='user_details')
     # path('login/',views.LoginAPIView,name='login')  

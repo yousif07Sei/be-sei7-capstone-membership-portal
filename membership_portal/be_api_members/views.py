@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers import json
 from django.forms import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render,get_object_or_404
@@ -9,7 +10,7 @@ from rest_framework import permissions
 from .models import *
 # from .models import TestModel
 
-from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, UserSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, UserSerializer, ProfileSerializer
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
 from rest_framework.decorators import parser_classes
@@ -24,7 +25,9 @@ load_dotenv()
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def user_list(request):
-    return JsonResponse({'test': 'test'})
+    users = Profile.objects.all()
+    serializer = ProfileSerializer(users, many = True)
+    return JsonResponse(serializer.data, safe = False)
 
 @csrf_exempt
 @api_view(['GET'])
@@ -172,10 +175,6 @@ def user_details(request):
 
 #     return JsonResponse(serializer.data, safe=False)
     
-   
-
-        
-    
 csrf_exempt
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -201,7 +200,14 @@ def organization_detail(request):
     organization_id = request.query_params['id']
     try:
         organization = Organization.objects.get(pk = organization_id)
-        response = OrganizationSerializer(organization).data
+        # get members of the organization
+        # members = Profile.objects.filter(organization_id = organization_id)
+        # json_serializer = json.Serializer()
+        # members_serialized = json_serializer.serialize(members)
+        serializer = OrganizationSerializer(organization).data
+        # print('MEMBERS DETAILS=========', members_serialized)
+        # serializer['members'] = members_serialized
+        response = serializer
     except ObjectDoesNotExist as e:
         response = f"Organization with id {organization_id} does not exist."
     except Exception as e:
@@ -239,6 +245,23 @@ def organization_create(request):
         return JsonResponse(serializer.data, safe = False)
     else:
         return JsonResponse(serializer.errors)
+
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+@parser_classes([MultiPartParser])
+def organization_update(request):
+    organization_id = request.query_params['id']
+    try:
+        organization = Organization.objects.get(pk = int(organization_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find organization with id {organization_id}'})
+    serializer = OrganizationRESTSerializers(organization, data = request.data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating organization'})
 
 # @csrf_exempt
 # @api_view(['POST'])
