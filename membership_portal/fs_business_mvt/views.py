@@ -94,10 +94,11 @@ def OrganizationDetail(request,pk):
     organization = Organization.objects.get(id = pk)
     users = Profile.objects.filter(organization = pk)
     usersList = []
-    print(users[0].status)
-    for i in users:
-        if i.status != 2:
-            usersList.append(i)
+    if users:
+        print(users[0].status)
+        for i in users:
+            if i.status != 2:
+                usersList.append(i)
             
     return render(request,'be_api_members/organization_detail.html' , {'organization':organization, 'users':usersList})
     
@@ -117,7 +118,7 @@ class ProfileUpdate(UpdateView):
         obj.status = request.POST.get('status')
         if 'image' in request.FILES:
             obj.image = request.FILES['image']
-        # obj. = request.POST.get('')
+        obj.status = request.POST.get('status')
         obj.save()
         return redirect('/organization/'+request.POST.get('orgId')+'/')
 class ProfileList(ListView):

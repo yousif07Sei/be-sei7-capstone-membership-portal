@@ -30,13 +30,15 @@
 <td>{{org.phone_number}}</td>
 <td>{{org.email_address}}</td>
 <td>{{org.country.name}}</td>
-<td>{% if org.status == '0' %}
+<td>{% if org.status == 0 %}
   Pending
-  {% elif org.status == '1' %}
+  {% elif org.status == 1 %}
   Active
-  {% elif org.status == '2' %}</td>
+  {% elif org.status == 2 %}
   Inactive
-  {% endif %}</td>
+  {% endif %}
+</td>
+</td>
 <!-- <td>org.</td> -->
 <!-- <td>org.</td> -->
 <td>

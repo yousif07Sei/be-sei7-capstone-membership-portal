@@ -168,13 +168,14 @@ MEDIA_URL = 'membership_portal/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'membership_portal/media/')
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:3000',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
-# CSRF_TRUSTED_ORIGINS = [
-#         'http://localhost:3000',
-#     ]
+CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:3000',
+    ]
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 

@@ -2,15 +2,16 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import render,get_object_or_404
+from rest_framework.decorators import api_view, permission_classes, APIView
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
-from .models import Benefit, Profile, Organization
+from .models import *
 # from .models import TestModel
-from .serializers import BenefitSerializer, BenefitRESTSerializers
+from .serializers import BenefitSerializer, BenefitRESTSerializers , UserSerializer
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser
+from django.contrib.auth.views import LoginView
 import qrcode
 import os
 from dotenv import load_dotenv
@@ -148,6 +149,29 @@ def benefit_update(request):
         return JsonResponse(serializer.data, safe = False)
     else:
         return JsonResponse({'message': 'Error udpating benefit'})
+
+@csrf_exempt
+@api_view(['GET'])
+def user_details(request):
+    email = request.query_params['email']
+    profile = get_object_or_404(Profile,email=email)
+    username = get_object_or_404(User,id = profile.user_id).username
+    # print("user_id", user_id)
+    user = get_object_or_404(User,username = username)
+    print("profile ", user )
+    
+    serializer = UserSerializer(user)
+    return JsonResponse(serializer.data)
+# @csrf_exempt
+# @api_view(['POST'])
+# def LoginAPIView(request):
+#     serializer = LoginSerializer(request.data, partial = True)
+
+#     return JsonResponse(serializer.data, safe=False)
+    
+   
+
+        
     
 # @csrf_exempt
 # @api_view(['POST'])
