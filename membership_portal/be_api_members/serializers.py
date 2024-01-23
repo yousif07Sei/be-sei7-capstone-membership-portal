@@ -3,11 +3,21 @@ from rest_framework import serializers
 from .models import Benefit, Organization
 # from .models import TestModel
 
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = ['name']
+
 class BenefitSerializer(serializers.ModelSerializer):
+    organization_name = serializers.SerializerMethodField()
     class Meta:
         model = Benefit
-        exclude = ('used_by_user',)
+        # exclude = ('used_by_user',)
         # fields = '__all__'
+        fields = ['id', 'organization', 'organization_name', 'title', 'description', 'created_date', 'expiry_date', 'status', 'used_by_user']
+
+    def get_organization_name(self, obj):
+        return obj.organization.name if obj.organization else None
 
 class BenefitRESTSerializers(serializers.Serializer):
     organization_id = serializers.IntegerField()
