@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers import json
 from django.forms import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render,get_object_or_404
@@ -8,9 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from .models import *
 # from .models import TestModel
+
 from rest_framework.response import Response
 import random
-from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, UserSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer
+
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
 from rest_framework.decorators import parser_classes
@@ -26,7 +29,9 @@ load_dotenv()
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def user_list(request):
-    return JsonResponse({'test': 'test'})
+    users = Profile.objects.all()
+    serializer = ProfileSerializer(users, many = True)
+    return JsonResponse(serializer.data, safe = False)
 
 @csrf_exempt
 @api_view(['GET'])
@@ -210,10 +215,6 @@ def user_create(request):
 
 #     return JsonResponse(serializer.data, safe=False)
     
-   
-
-        
-    
 csrf_exempt
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -239,7 +240,14 @@ def organization_detail(request):
     organization_id = request.query_params['id']
     try:
         organization = Organization.objects.get(pk = organization_id)
-        response = OrganizationSerializer(organization).data
+        # get members of the organization
+        # members = Profile.objects.filter(organization_id = organization_id)
+        # json_serializer = json.Serializer()
+        # members_serialized = json_serializer.serialize(members)
+        serializer = OrganizationSerializer(organization).data
+        # print('MEMBERS DETAILS=========', members_serialized)
+        # serializer['members'] = members_serialized
+        response = serializer
     except ObjectDoesNotExist as e:
         response = f"Organization with id {organization_id} does not exist."
     except Exception as e:
@@ -277,6 +285,67 @@ def organization_create(request):
         return JsonResponse(serializer.data, safe = False)
     else:
         return JsonResponse(serializer.errors)
+
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+@parser_classes([MultiPartParser])
+def organization_update(request):
+    organization_id = request.query_params['id']
+    try:
+        organization = Organization.objects.get(pk = int(organization_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find organization with id {organization_id}'})
+    serializer = OrganizationRESTSerializers(organization, data = request.data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating organization'})
+
+csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_list(request):
+    '''
+    Get list of all plans
+    '''
+    try:
+        plan_list = Plan.objects.all()
+        serializer = PlanSerializer(plan_list, many = True)
+        response = serializer.data
+    except ValidationError as e:
+        response = e.message
+    return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_create(request):
+    data = JSONParser().parse(request)
+    serializer = PlanRESTSerializers(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse(serializer.errors)
+
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_update(request):
+    plan_id = request.query_params['id']
+    try:
+        plan = Plan.objects.get(pk = int(plan_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find plan with id {plan_id}'})
+    data = JSONParser().parse(request)
+    serializer = PlanRESTSerializers(plan, data = data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating plan'})
 
 # @csrf_exempt
 # @api_view(['POST'])

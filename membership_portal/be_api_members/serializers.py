@@ -1,12 +1,20 @@
 from rest_framework import serializers
 
-from .models import Benefit, Organization, User, Profile
+from .models import Benefit, Organization, User, Profile, Plan
 # from .models import TestModel
 
 class OrganizationSerializer(serializers.ModelSerializer):
+    country_name = serializers.SerializerMethodField()
+    country_short_name = serializers.SerializerMethodField()
     class Meta:
         model = Organization
-        fields = '__all__'
+        fields = ['id', 'name', 'logo', 'cr_number', 'email_address', 'sector', 'website', 'address_one', 'address_two', 'city', 'zip_code', 'content_info', 'interests', 'status', 'country', 'country_name', 'country_short_name']
+    
+    def get_country_name(self, obj):
+        return obj.country.name if obj.country else None
+    
+    def get_country_short_name(self, obj):
+        return obj.country.short_name if obj.country else None
 
 class BenefitSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
@@ -38,7 +46,6 @@ class BenefitRESTSerializers(serializers.Serializer):
         return instance
     
 class OrganizationRESTSerializers(serializers.Serializer):
-    # NOT IMPLEMENTED
     name = serializers.CharField(required = True)
     logo = serializers.ImageField(required = False)
     cr_number = serializers.CharField(required = True)
@@ -58,18 +65,33 @@ class OrganizationRESTSerializers(serializers.Serializer):
         return Organization.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
-        instance.description = validated_data.get('description', instance.description)
-        instance.title = validated_data.get('title', instance.title)
-        instance.expiry_date = validated_data.get('expiry_date', instance.expiry_date)
+        instance.name = validated_data.get('name', instance.name)
+        instance.logo = validated_data.get('logo', instance.logo)
+        instance.cr_number = validated_data.get('cr_number', instance.cr_number)
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.email_address = validated_data.get('email_address', instance.email_address)
+        instance.sector = validated_data.get('sector', instance.sector)
+        instance.website = validated_data.get('website', instance.website)
+        instance.address_one = validated_data.get('address_one', instance.address_one)
+        instance.address_two = validated_data.get('address_two', instance.address_two)
+        instance.zip_code = validated_data.get('zip_code', instance.zip_code)
+        instance.city = validated_data.get('city', instance.city)
+        instance.country_id = validated_data.get('country_id', instance.country_id)
+        instance.content_info = validated_data.get('content_info', instance.content_info)
+        instance.interests = validated_data.get('interests', instance.interests)
         instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
 
 class ProfileSerializer(serializers.ModelSerializer):
-    
+    organization_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id']
+        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
+    
+    def get_organization_name(self, obj):
+        return obj.organization.name if obj.organization else None
         
     def create(self, validated_data):
         User.objects.create()
@@ -85,7 +107,29 @@ class UserSerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField()
     # username = serializers.CharField()
     # profile = serializers.DictField()
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = '__all__'
+
+class PlanRESTSerializers(serializers.Serializer):
+    name = serializers.CharField(required = True)
+    price = serializers.IntegerField(required = True)
+    member_number = serializers.IntegerField()
+    status = serializers.BooleanField()
+
+    def create(self, validated_data):
+        return Plan.objects.create(**validated_data)
     
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.price = validated_data.get('price', instance.price)
+        instance.member_number = validated_data.get('member_number', instance.member_number)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
+
 # class LoginSerializer(serializers.Serializer):
 #     username = serializers.CharField()
 #     password = serializers.CharField(write_only = True)
