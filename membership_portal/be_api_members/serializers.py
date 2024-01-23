@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Benefit, Organization, User, Profile, Plan, Event, Interest
+from .models import Benefit, Organization, User, Profile, Plan, Event, Interest, Country
 
 # from .models import TestModel
 

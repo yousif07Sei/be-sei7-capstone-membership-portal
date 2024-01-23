@@ -216,7 +216,7 @@ def user_create(request):
 
 #     return JsonResponse(serializer.data, safe=False)
     
-csrf_exempt
+@csrf_exempt
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def organization_list(request):
