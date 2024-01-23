@@ -66,12 +66,19 @@ class OrganizationRESTSerializers(serializers.Serializer):
         return instance
 
 class ProfileSerializer(serializers.ModelSerializer):
-     class Meta:
+    
+    class Meta:
         model = Profile
         fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id']
         
+    def create(self, validated_data):
+        User.objects.create()
+        return Profile.objects.create(**validated_data)
 class UserSerializer(serializers.ModelSerializer):
      profile = ProfileSerializer(required = True)
+     
+     def create(self, validated_data):
+        return User.objects.create(**validated_data)
      class Meta:
         model = User
         fields = ['profile', 'username']

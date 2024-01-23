@@ -19,7 +19,8 @@ urlpatterns = [
     path('organization/delete', views.organization_delete, name = 'organization_delete'),
     path('organization/create', views.organization_create, name = 'organization_create'),
 
-    path('user/',views.user_details,name='user_details')
+    path('user/',views.user_details,name='user_details'),
+    path('user/create/',views.user_create,name='user_create')
     # path('login/',views.LoginAPIView,name='login')  
 
     # Test model
