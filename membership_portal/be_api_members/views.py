@@ -10,7 +10,7 @@ from rest_framework import permissions
 from .models import *
 # from .models import TestModel
 
-from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, UserSerializer, ProfileSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
 from rest_framework.decorators import parser_classes
@@ -262,6 +262,50 @@ def organization_update(request):
         return JsonResponse(serializer.data, safe = False)
     else:
         return JsonResponse({'message': 'Error udpating organization'})
+
+csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_list(request):
+    '''
+    Get list of all plans
+    '''
+    try:
+        plan_list = Plan.objects.all()
+        serializer = PlanSerializer(plan_list, many = True)
+        response = serializer.data
+    except ValidationError as e:
+        response = e.message
+    return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_create(request):
+    data = JSONParser().parse(request)
+    serializer = PlanRESTSerializers(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse(serializer.errors)
+
+csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def plan_update(request):
+    plan_id = request.query_params['id']
+    try:
+        plan = Plan.objects.get(pk = int(plan_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find plan with id {plan_id}'})
+    data = JSONParser().parse(request)
+    serializer = PlanRESTSerializers(plan, data = data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating plan'})
 
 # @csrf_exempt
 # @api_view(['POST'])

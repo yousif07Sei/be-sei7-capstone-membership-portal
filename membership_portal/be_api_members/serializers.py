@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Benefit, Organization, User, Profile
+from .models import Benefit, Organization, User, Profile, Plan
 # from .models import TestModel
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -46,7 +46,6 @@ class BenefitRESTSerializers(serializers.Serializer):
         return instance
     
 class OrganizationRESTSerializers(serializers.Serializer):
-    # NOT IMPLEMENTED
     name = serializers.CharField(required = True)
     logo = serializers.ImageField(required = False)
     cr_number = serializers.CharField(required = True)
@@ -94,14 +93,36 @@ class ProfileSerializer(serializers.ModelSerializer):
         return obj.organization.name if obj.organization else None
         
 class UserSerializer(serializers.ModelSerializer):
-     profile = ProfileSerializer(required = True)
-     class Meta:
+    profile = ProfileSerializer(required = True)
+    class Meta:
         model = User
         fields = ['profile', 'username']
     # id = serializers.IntegerField()
     # username = serializers.CharField()
     # profile = serializers.DictField()
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = '__all__'
+
+class PlanRESTSerializers(serializers.Serializer):
+    name = serializers.CharField(required = True)
+    price = serializers.IntegerField(required = True)
+    member_number = serializers.IntegerField()
+    status = serializers.BooleanField()
+
+    def create(self, validated_data):
+        return Plan.objects.create(**validated_data)
     
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.price = validated_data.get('price', instance.price)
+        instance.member_number = validated_data.get('member_number', instance.member_number)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
+
 # class LoginSerializer(serializers.Serializer):
 #     username = serializers.CharField()
 #     password = serializers.CharField(write_only = True)

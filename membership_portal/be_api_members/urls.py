@@ -20,6 +20,12 @@ urlpatterns = [
     path('organization/create', views.organization_create, name = 'organization_create'),
     path('organization/update', views.organization_update, name = 'organization_update'),
 
+    # API endpoints for plan
+    path('plan/list', views.plan_list, name = 'plan_list'),
+    path('plan/create', views.plan_create, name = 'plan_create'),
+    path('plan/update', views.plan_update, name = 'plan_update'),
+
+
     path('user/',views.user_details,name='user_details')
     # path('login/',views.LoginAPIView,name='login')  
 
