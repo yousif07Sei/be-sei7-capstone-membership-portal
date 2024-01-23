@@ -207,8 +207,11 @@ class Event(models.Model):
     end_date = models.DateTimeField('Event End Date')
     attendees = models.ManyToManyField(Profile)
 
+    # def __str__(self):
+    #     return f'{self.title}'
+
     # def clean(self):
-    #     if self.start_date < timezone.now().date():
+    #     if self.start_date < datetime.datetime.now():
     #         raise ValidationError({'start_date': 'Start date can not be before today.'})
     #     elif self.end_date < self.start_date:
     #         raise ValidationError({'end_date': 'end date before the start date.'})
