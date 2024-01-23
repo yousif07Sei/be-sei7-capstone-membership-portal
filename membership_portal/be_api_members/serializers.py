@@ -6,7 +6,7 @@ from .models import Benefit, Organization, User, Profile
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ['name']
+        fields = '__all__'
 
 class BenefitSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
@@ -28,6 +28,34 @@ class BenefitRESTSerializers(serializers.Serializer):
 
     def create(self, validated_data):
         return Benefit.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.description = validated_data.get('description', instance.description)
+        instance.title = validated_data.get('title', instance.title)
+        instance.expiry_date = validated_data.get('expiry_date', instance.expiry_date)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
+    
+class OrganizationRESTSerializers(serializers.Serializer):
+    # NOT IMPLEMENTED
+    name = serializers.CharField(required = True)
+    logo = serializers.ImageField(required = False)
+    cr_number = serializers.CharField(required = True)
+    phone_number = serializers.CharField(required = True)
+    email_address = serializers.EmailField(required = True)
+    sector = serializers.CharField(required = True)
+    website = serializers.CharField()
+    address_one = serializers.CharField()
+    address_two = serializers.CharField()
+    zip_code = serializers.IntegerField()
+    city = serializers.CharField(required = True)
+    country_id = serializers.IntegerField(required = True)
+    content_info = serializers.CharField(required = True)
+    interests = serializers.CharField()
+
+    def create(self, validated_data):
+        return Organization.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
         instance.description = validated_data.get('description', instance.description)

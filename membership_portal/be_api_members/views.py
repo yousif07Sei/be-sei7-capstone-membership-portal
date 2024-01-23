@@ -8,9 +8,12 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from .models import *
 # from .models import TestModel
-from .serializers import BenefitSerializer, BenefitRESTSerializers , UserSerializer
+
+from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, UserSerializer
 # from .serializers import TestModelSerializer
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
+from rest_framework.decorators import parser_classes
+# from .serializers import TestModelSerializer
 from django.contrib.auth.views import LoginView
 import qrcode
 import os
@@ -173,6 +176,70 @@ def user_details(request):
 
         
     
+csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def organization_list(request):
+    '''
+    Get list of all registered organizations
+    '''
+    try:
+        organization_list = Organization.objects.all()
+        serializer = OrganizationSerializer(organization_list, many = True)
+        response = serializer.data
+    except ValidationError as e:
+        response = e.message
+    return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def organization_detail(request):
+    '''
+    Get details of a specific organization given its id
+    '''
+    organization_id = request.query_params['id']
+    try:
+        organization = Organization.objects.get(pk = organization_id)
+        response = OrganizationSerializer(organization).data
+    except ObjectDoesNotExist as e:
+        response = f"Organization with id {organization_id} does not exist."
+    except Exception as e:
+        response = str(e)
+    return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def organization_delete(request):
+    '''
+    Soft delete (hide) an organization from the users
+    '''
+    organization_id = request.query_params['id']
+    try:
+        organization = Organization.objects.get(pk = organization_id)
+        organization.status = '2'
+        organization.save()
+        return JsonResponse({'message': f'Organization {organization_id} has been deleted'})
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: organization {organization_id} does not exist'})
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+@parser_classes([MultiPartParser])
+def organization_create(request):
+    # Verify that organization does not exist
+    org_name = request.data['name']
+    if Organization.objects.filter(name__iexact = org_name).exists():
+        return JsonResponse({'message': f'Organization {org_name} already exist'})
+    serializer = OrganizationRESTSerializers(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse(serializer.errors)
+
 # @csrf_exempt
 # @api_view(['POST'])
 # @permission_classes([permissions.IsAuthenticated])
