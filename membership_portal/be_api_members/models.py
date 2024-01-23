@@ -170,8 +170,8 @@ class Benefit(models.Model):
     # Register user to the benefit once they have used it
     used_by_user = models.ManyToManyField(Profile, related_name = 'used_benefit', blank = True)
     status = models.CharField(
-        choices = benefit_status,
-        default = benefit_status[0][0]
+        choices = status,
+        default = status[0][0]
     )
 
     def __str__(self):
