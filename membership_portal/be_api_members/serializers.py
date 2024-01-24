@@ -6,15 +6,19 @@ from .models import Benefit, Organization, User, Profile, Plan, Event, Interest,
 class OrganizationSerializer(serializers.ModelSerializer):
     country_name = serializers.SerializerMethodField()
     country_short_name = serializers.SerializerMethodField()
+    country_flag = serializers.SerializerMethodField()
     class Meta:
         model = Organization
-        fields = ['id', 'name', 'logo', 'cr_number', 'email_address', 'sector', 'website', 'address_one', 'address_two', 'city', 'zip_code', 'content_info', 'interests', 'status', 'country', 'country_name', 'country_short_name']
+        fields = ['id', 'name', 'logo', 'cr_number', 'email_address', 'sector', 'website', 'address_one', 'address_two', 'city', 'zip_code', 'content_info', 'interests', 'status', 'country', 'country_name', 'country_short_name', 'country_flag']
     
     def get_country_name(self, obj):
         return obj.country.name if obj.country else None
     
     def get_country_short_name(self, obj):
         return obj.country.short_name if obj.country else None
+    
+    def get_country_flag(self, obj):
+        return obj.country.flag if obj.country else None
 
 class BenefitSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
@@ -169,3 +173,8 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['title','description','location','sponsor','start_date','end_date']
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'

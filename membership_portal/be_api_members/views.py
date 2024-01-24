@@ -12,7 +12,7 @@ from .models import *
 
 from rest_framework.response import Response
 import random
-from .serializers import BenefitSerializer, BenefitRESTSerializers, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer, EventSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, CountrySerializer, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer, EventSerializer
 
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
@@ -375,3 +375,10 @@ def event_list(request):
     except ValidationError as e:
         response = e.message
     return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['GET'])
+def country_list(request):
+    countries = Country.objects.all()
+    serializer = CountrySerializer(countries, many = True)
+    return JsonResponse(serializer.data, safe = False)
