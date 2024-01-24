@@ -249,7 +249,7 @@ class EventSerializer(serializers.ModelSerializer):
     attendees = ProfileSerializer(many = True)
     class Meta:
         model = Event
-        fields = ['title','description','location','sponsor','start_date','end_date', 'attendees']
+        fields = ['id', 'title','description','location','sponsor','start_date','end_date', 'attendees']
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:

@@ -401,6 +401,7 @@ def plan_update(request):
 #     #     return JsonResponse({'message': 'Error: failed to create new benefit'})
 #     return JsonResponse(serializer, safe=False)
 @csrf_exempt
+@permission_classes([permissions.IsAuthenticated])
 @api_view(['GET'])
 def event_list(request):
     '''
