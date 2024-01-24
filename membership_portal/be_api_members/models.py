@@ -71,6 +71,25 @@ class Country(models.Model):
     # def get_country_nationality(self):
     #     return self.nationality_name
     
+
+class PlanFeature(models.Model):
+    name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+# Yousif Added the model plan
+class Plan(models.Model):
+    name =models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    member_number = models.IntegerField()
+    # features = models.CharField(max_length=1, choices=features, default=features[0][0])
+    plan_feature = models.ManyToManyField(PlanFeature)
+
+    status = models.BooleanField(default=True)
+    # PlanFeature = models.ManyToManyField(PlanFeature)
+
+    def __str__(self):
+        return  f'{self.name}'    
 class Organization(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     logo = models.ImageField(upload_to='fs_business_mvt/static/uploads', default="")
@@ -88,32 +107,13 @@ class Organization(models.Model):
     # interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
     interests = models.ManyToManyField(Interest)
     status = models.IntegerField(choices=status,default=status[0][0])
-    longname = models.CharField(max_length=100, blank=True, null=True)
+    # longname = models.CharField(max_length=100, blank=True, null=True)
+    plan = models.ForeignKey(Plan, on_delete = models.DO_NOTHING, unique=False, default=1)
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.name
-    
-class PlanFeature(models.Model):
-    name = models.CharField(max_length=20)
-    def __str__(self):
-        return self.name
-    
-# Yousif Added the model plan
-class Plan(models.Model):
-    name =models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    member_number = models.IntegerField()
-    # features = models.CharField(max_length=1, choices=features, default=features[0][0])
-    plan_feature = models.ManyToManyField(PlanFeature)
-
-    status = models.BooleanField(default=True)
-    # PlanFeature = models.ManyToManyField(PlanFeature)
-
-    def __str__(self):
-        return  f'{self.name}'
-
 
 
 class Profile(models.Model):
