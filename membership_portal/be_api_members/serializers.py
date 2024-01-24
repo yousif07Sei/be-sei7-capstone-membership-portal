@@ -118,7 +118,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
     
     def get_organization_name(self, obj):
-        return obj.organization.name if obj.organization else None
+        if hasattr(obj, 'organization') and obj.organization is not None and hasattr(obj.organization, 'name') and obj.organization.name is not None:
+            return obj.organization.name
+        else:
+            return None
+
+
         
     def create(self, validated_data):
         User.objects.create()
