@@ -162,7 +162,7 @@ def benefit_update(request):
 
 @csrf_exempt
 @api_view(['GET'])
-def user_details(request):
+def user_detail(request):
     email = request.query_params['email']
     profile = get_object_or_404(Profile,email=email)
     username = get_object_or_404(User,id = profile.user_id).username

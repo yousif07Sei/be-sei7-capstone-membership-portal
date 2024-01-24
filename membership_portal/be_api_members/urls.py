@@ -31,7 +31,7 @@ urlpatterns = [
     # API engpoints for countries
     path('country/list', views.country_list, name = 'country_list'),
 
-    path('user/',views.user_details,name='user_details'),
+    path('user/',views.user_detail,name='user_detail'),
     path('user/create/',views.user_create,name='user_create')
     # path('login/',views.LoginAPIView,name='login')  
 
