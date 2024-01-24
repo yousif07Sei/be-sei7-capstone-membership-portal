@@ -162,7 +162,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
+        fields = ['id', 'first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
     
     def get_organization_name(self, obj):
         if hasattr(obj, 'organization') and obj.organization is not None and hasattr(obj.organization, 'name') and obj.organization.name is not None:
