@@ -5,7 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bussiness Portal</title>
+  <title>Business Portal</title>
+  <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
@@ -13,57 +14,59 @@
   
 </head>
 <body>
-    <header class="navbar-fixed">
-        <nav>
-            <div  class="nav-wrapper">
-                <ul>
-                    <li>
-                        <!-- NEEDS TO BE A LOGO / comment by : Hussain -->
-                        <a href="{% url 'bussines_portal_app:home' %}" class="left brand-logo">Bussines Portal</a>
-                    </li>
-                </ul>
-                    <ul class="right">
-                    {% if user.is_authenticated  %}
-                      
-                    <li>Welcome {{user.profile.first_name}} {{user.profile.last_name}}</li>
+  <header class="navbar-fixed">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg ">
+        <div  class="nav-wrapper container-fluid">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <!-- NEEDS TO BE A LOGO / comment by : Hussain -->
+                    <a class="nav-link" href="{% url 'bussines_portal_app:home' %}" class="left brand-logo"><img class="logo" src="{% static 'img/logo.png' %}"> Business Portal</a>
+                </li>
+            </ul>
+                <ul class="right navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_authenticated  %}
+                  
+                <li class="nav-item"><span class="nav-link active">Welcome {{user.profile.first_name}} {{user.profile.last_name}}</span></li>
 
-                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                        {% csrf_token %}
-                      </form>
-                      <a href="#" onclick="document.getElementById('logout-form').submit();">Logout</a>
-                    <li><a href="{% url 'bussines_portal_app:organization_index' %}">Organizations</a></li>
+                
+                <li class="nav-item" class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:organization_index' %}">Organizations</a></li>
 
-                    <li><a href="{% url 'bussines_portal_app:organization_create' %}">Create Organization (TEST)</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:organization_create' %}">Create Organization (TEST)</a></li>
 
-                    <li><a href="{% url 'bussines_portal_app:profile_index' %}">Users</a></li>
-                    
-                    <li><a href="{% url 'bussines_portal_app:plan_index' %}">Plans</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:profile_index' %}">Users</a></li>
+                
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:plan_index' %}">Plans</a></li>
 
-                    <li><a href="{% url 'bussines_portal_app:plan_create' %}">Plan Create</a></li>
-                   
-                    <li><a href="{% url 'bussines_portal_app:events_index' %}">Events</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:plan_create' %}">Plan Create</a></li>
+               
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:events_index' %}">Events</a></li>
 
-                    <li><a href="{% url 'bussines_portal_app:events_create' %}">Event Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'bussines_portal_app:events_create' %}">Event Create</a></li>
 
-                    
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                  </form>
+                  <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit();">Logout</a>
 
-                    {% else %}
-                    <li><a href="{% url 'login' %}">Log in</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
+                {% endif %}
+            </ul>
+        </div>
 
-        </nav>
-    </header>
-    <main class="container">
+    </nav>
+</header>
+    <main>
   {% block content %}
   {% endblock %}
     </main>
   <footer class="page-footer">
-    <div class="right">
-    All Rights Reserved, &copy; 2024 Bussines Portal
+    <div class="text-center text-bg-dark mt-5 px-3 py-3 ">
+    All Rights Reserved, &copy; 2024 Business Portal
     </div>
 </footer>
+
+
 
 
 </body>

@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div class="container forms-h1 mt-5">
+
 {%if object%}
 <h1>Edit {{object.name}}</h1>
 {%else%}
 <h1>Create Plan</h1>
 {%endif%}
-<form action="" method="POST" >
+<form class="form-card mt-3" action="" method="POST" >
     {% csrf_token %}
     <div class="mb-3">
       <label  class="form-label">Name</label>
@@ -48,6 +50,8 @@
       
      
      
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-dark">Submit</button>
   </form>
+
+</div>
 {%  endblock  %}

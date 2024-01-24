@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
-<h3>Edit {{object.first_name}} {{object.last_name}} </h3>
-<form action="" method="post" enctype="multipart/form-data">
+<div class="container forms-h1 mt-5">
+<h1>Edit {{object.first_name}} {{object.last_name}} </h1>
+<form class="form-card mt-3" action="" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <div class="mb-3">
   <label  class="form-label">First Name</label>
@@ -74,4 +74,5 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>
+</div>
 {%  endblock  %}
