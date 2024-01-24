@@ -219,9 +219,10 @@ class PlanRESTSerializers(serializers.Serializer):
     # def create(self, validated_data):
     #     return TestModel.objects.create(**validated_data)
 class EventSerializer(serializers.ModelSerializer):
+    attendees = ProfileSerializer(many = True)
     class Meta:
         model = Event
-        fields = ['title','description','location','sponsor','start_date','end_date']
+        fields = ['title','description','location','sponsor','start_date','end_date', 'attendees']
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
