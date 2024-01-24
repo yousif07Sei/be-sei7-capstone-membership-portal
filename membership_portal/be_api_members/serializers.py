@@ -147,6 +147,33 @@ class OrganizationRESTSerializers(serializers.Serializer):
         instance.save()
         return instance
 
+class ProfileRESTSerializers(serializers.Serializer):
+    dob = serializers.DateField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    phoneNumber = serializers.CharField()
+    email = serializers.CharField()
+    martial = serializers.CharField()
+    nationality = serializers.CharField()
+    gender = serializers.CharField()
+    job_title = serializers.CharField()
+
+    def create(self, validated_data):
+        return Benefit.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.dob = validated_data.get('dob', instance.dob)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.phoneNumber = validated_data.get('phoneNumber', instance.phoneNumber)
+        instance.email = validated_data.get('email', instance.email)
+        instance.martial = validated_data.get('martial', instance.martial)
+        instance.nationality = validated_data.get('nationality', instance.nationality)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.job_title = validated_data.get('job_title', instance.job_title)
+        instance.save()
+        return instance
+
 class SignUpProfileSerializer(serializers.ModelSerializer):
 
     class Meta:

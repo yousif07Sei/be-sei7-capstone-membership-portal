@@ -12,7 +12,7 @@ from .models import *
 
 from rest_framework.response import Response
 import random
-from .serializers import BenefitSerializer, BenefitRESTSerializers, CountrySerializer, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, UserSerializer, ProfileSerializer, EventSerializer
+from .serializers import BenefitSerializer, BenefitRESTSerializers, CountrySerializer, OrganizationSerializer, OrganizationRESTSerializers, PlanRESTSerializers, PlanSerializer, ProfileRESTSerializers, UserSerializer, ProfileSerializer, EventSerializer
 
 # from .serializers import TestModelSerializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser, FileUploadParser
@@ -196,6 +196,23 @@ def user_create(request):
     data = Profile.objects.create(email=email, user=user, role=role, first_name=first_name, last_name=last_name,dob=dob,martial=martial,gender=gender, image=image, job_title=job_title, phoneNumber=phoneNumber)
     serializer = UserSerializer(user)
     return JsonResponse(serializer.data)
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def user_update(request):
+    user_id = request.query_params['id']
+    try:
+        user = Profile.objects.get(pk = int(user_id))
+    except ObjectDoesNotExist:
+        return JsonResponse({'message': f'Error: Cannot find user with id {user_id}'})
+    data = JSONParser().parse(request)
+    serializer = ProfileRESTSerializers(user, data = data, partial = True)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, safe = False)
+    else:
+        return JsonResponse({'message': 'Error udpating user'})
     # return Response({'access_token': access_token, 'refresh_token': str(refresh) }, status=status.HTTP_201_CREATED)
     
 # @csrf_exempt
