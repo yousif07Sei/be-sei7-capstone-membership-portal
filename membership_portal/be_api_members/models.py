@@ -207,6 +207,16 @@ class Event(models.Model):
     end_date = models.DateTimeField('Event End Date')
     attendees = models.ManyToManyField(Profile)
 
+    def assign_to_user(self, user):
+        '''
+        Call this function to add a user to the current event list.
+        '''
+        if user not in self.attendees.all():
+            self.attendees.add(user)
+            self.save()
+        else:
+            raise ValidationError("User is already registered in this event.")
+
     # def __str__(self):
     #     return f'{self.title}'
 

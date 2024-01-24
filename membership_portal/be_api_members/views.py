@@ -398,6 +398,25 @@ def event_list(request):
     return JsonResponse(response, safe = False)
 
 @csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def event_add_user(request):
+    '''
+    Add specific user to a specific event
+    '''
+    event_id = request.data['event']
+    user_id = request.data['user']
+    user = Profile.objects.get(user_id = user_id)
+    event = Event.objects.get(pk = event_id)
+    try:
+        event.assign_to_user(user)
+        serializer = EventSerializer(event)
+        response = serializer.data
+    except ValidationError as e:
+        response = e.message
+    return JsonResponse(response, safe = False)
+
+@csrf_exempt
 @api_view(['GET'])
 def country_list(request):
     countries = Country.objects.all()
