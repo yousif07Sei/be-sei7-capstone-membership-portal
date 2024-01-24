@@ -33,12 +33,6 @@ class Interest(models.Model):
     def __str__(self):
         return self.interest
 
-benefit_status = (
-    ('0', 'pending'),
-    ('1', 'approved'),
-    ('2', 'hidden')
-)
-
 features = (
     ("B", "Benefits"),
     ("E", "Events"),
