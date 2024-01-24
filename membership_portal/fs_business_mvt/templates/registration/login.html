@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static%}
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }} 
 
 <div id="layoutAuthentication_content">
 <!-- <h1>Log In</h1>  -->
@@ -13,8 +16,8 @@
 
   <main>
       <div class="container">
-        <center><br>
-            <h3><span class="badge bg-dark">MVP - Bussines Portal <!--mERP&trade;--></span></h3></center>                  
+        <!-- <center><br>
+            <h3><span class="badge bg-dark">MVP - Bussines Portal <!--mERP&trade;--></span></h3></center>                   
           <div class="row justify-content-center">
               <div class="col-lg-5">
                   <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -24,9 +27,26 @@
         <div class="col-6"><div class="text-end"><img src="{% static 'img/2fa.png' %}" height="36px"></div></div>
                         </div>
                       </div>
-                          <form class="p-2" method="POST" action="{% url 'bussines_portal_app:login' %}">
+                          <form class="p-3" method="POST" action="{% url 'bussines_portal_app:login' %}">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            <label>Username</label>
+                            <div class="mb-3">
+                              <input type="text" class="form-control" name="{{ form.username.name }}" />
+                            </div>
+                            <label>Password</label>
+                            <div class="mb-3">
+                              <input type="password" class="form-control" name="{{ form.password.name }}" />
+                            </div>
+                            
+                            <!-- <div class="mb-3 form-control" > -->
+                              <!-- <input type="text" class="form-control"
+                              name='username' placeholder="username" value="{{form.username}}"> -->
+                            <!-- </div> 
+                            <div class="mb-3">
+                              <input type="text" class="form-control"
+                              name='password' placeholder="password" value="{{form.password}}">
+                            </div>  -->
+                            
                               <div class="mb-3">
                                 <input type="hidden" name="next" value="{{ next }}">
                               <div class="mb-3">

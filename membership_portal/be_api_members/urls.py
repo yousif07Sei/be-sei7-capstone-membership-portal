@@ -28,6 +28,7 @@ urlpatterns = [
 
     # API endpoints for Events
     path('event/list', views.event_list, name = 'event_list'),
+    path('event/adduser', views.event_add_user, name = 'event_add_user'),
 
     # API engpoints for countries
     path('country/list', views.country_list, name = 'country_list'),
