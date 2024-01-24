@@ -19,6 +19,7 @@ urlpatterns = [
     path('organization/delete', views.organization_delete, name = 'organization_delete'),
     path('organization/create', views.organization_create, name = 'organization_create'),
     path('organization/update', views.organization_update, name = 'organization_update'),
+    path('organization/members', views.organization_members, name = 'organization_members'),
 
     # API endpoints for plan
     path('plan/list', views.plan_list, name = 'plan_list'),

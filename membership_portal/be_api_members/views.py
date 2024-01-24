@@ -256,6 +256,18 @@ def organization_detail(request):
     return JsonResponse(response, safe = False)
 
 @csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def organization_members(request):
+    '''
+    Get list of members that belong to an organization
+    '''
+    organization_id = request.query_params['id']
+    members = Profile.objects.filter(organization_id = organization_id, status = 1)
+    serializer = ProfileSerializer(members, many = True)
+    return JsonResponse(serializer.data, safe = False)
+
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def organization_delete(request):
