@@ -65,3 +65,7 @@ main{
 h1{
     color: blueviolet;
 }
+td a{
+    text-decoration: none;
+    font-weight: bold;
+}

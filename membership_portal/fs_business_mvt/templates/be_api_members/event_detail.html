@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container forms-h1 mt-5">
+<h1>Event Details</h1>
+    <div class="card form-card mt-3">
+        <div class="card-content">
+            <h3 class="card-title">{{ event.title }}</h3>
+            {% if event.attendees.count %}
+            <p>Attendees List: </p>
+            <ul>
+            {% for attendee in event.attendees.all %}
+                <li>{{attendee.first_name}}</li>
+            {% endfor %}
+            </ul>
+            {% else %}
+                <h5>No attendees</h5>
+            {% endif %}
+            <!-- <p>Description: {{ event.description }}</p>
+            <p>Location: {{ event.location }}</p>
+            <p>Sponsor: {{ event.sponsor }}</p>
+            <p>Start Date: {{ event.start_date }}</p>
+            <p>End Date: {{ event.end_date }}</p> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
