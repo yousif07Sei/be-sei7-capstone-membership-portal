@@ -292,14 +292,23 @@ def organization_create(request):
     org_name = request.data['name']
     if Organization.objects.filter(name__iexact = org_name).exists():
         return JsonResponse({'message': f'Organization {org_name} already exist'})
+    print("HERE!")
+    userID = request.data['user_id']
     serializer = OrganizationRESTSerializers(data=request.data)
     if serializer.is_valid():
+        print("valid",serializer)
         serializer.save()
+        print("org",org_name)
+        profile = get_object_or_404(Profile,user_id=userID)
+        org = get_object_or_404(Organization,name=org_name)
+        profile.organization_id = org.id
+        profile.save()
         return JsonResponse(serializer.data, safe = False)
     else:
+        print("not valid",serializer)
         return JsonResponse(serializer.errors)
 
-csrf_exempt
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 @parser_classes([MultiPartParser])

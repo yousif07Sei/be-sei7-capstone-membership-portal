@@ -80,12 +80,12 @@ class BenefitRESTSerializers(serializers.Serializer):
 class InterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interest
-        fields = '__all__'
+        fields = ['interest']
 
 class OrganizationRESTSerializers(serializers.Serializer):
 
-    interests = InterestSerializer(many=True)
-
+    #interests = InterestSerializer(many=True)
+    interests = serializers.PrimaryKeyRelatedField(queryset=Interest.objects.all(), read_only=False,many=True)
     name = serializers.CharField(required = True)
     logo = serializers.ImageField(required = False)
     cr_number = serializers.CharField(required = True)
@@ -101,8 +101,27 @@ class OrganizationRESTSerializers(serializers.Serializer):
     content_info = serializers.CharField(required = True)
     # interests = serializers.ManyRelatedField()
 
+    def get_validation_exclusions(self, *args, **kwargs):
+        print("EXCLUDES")
+        exclusions = super(OrganizationRESTSerializers, self).get_validation_exclusions()
+        return exclusions + ['interests']
+
     def create(self, validated_data):
-        return Organization.objects.create(**validated_data)
+        interestsData = validated_data.pop('interests')
+        # print('After', validated_data)
+        # print("int DATA",interestsData)
+        # splitedData = interestsData.split(',')
+        # interestsArr = []
+        # for i in splitedData:
+        #     interestsArr.append(int(i))
+        # print("Array HERE!",interestsArr)
+        # interests = Interest.objects.filter(**interestsData)
+        # print(interests)
+        org = Organization.objects.create( **validated_data)
+        org.interests.set(interestsData)
+        # user = self
+        # print("user",user)
+        return org
     
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -132,7 +151,7 @@ class SignUpProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id']
+        fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id','user_id']
         
     def create(self, validated_data):
         User.objects.create()
