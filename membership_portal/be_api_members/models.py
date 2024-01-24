@@ -69,32 +69,7 @@ class Country(models.Model):
         ordering = ['name']
         
     # def get_country_nationality(self):
-    #     return self.nationality_name
-    
-class Organization(models.Model):
-    name = models.CharField(max_length=100, blank=False, null=False)
-    logo = models.ImageField(upload_to='fs_business_mvt/static/uploads', default="")
-    cr_number = models.CharField(max_length=20, blank=False, null=False)
-    phone_number = models.CharField(max_length=100, blank=False, null=False)
-    email_address = models.EmailField(max_length=100, blank=False, null=False)
-    sector = models.CharField(max_length=100, blank=False, null=False)
-    website = models.CharField(max_length=100)
-    address_one = models.CharField(max_length=100) #,blank=False, null=False
-    address_two = models.CharField(max_length=100)
-    city = models.CharField(max_length=100, blank=False, null=False)
-    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False, null=False,db_index=False,db_constraint=False, default=837)
-    zip_code = models.IntegerField(blank=False, null=False)
-    content_info = models.TextField(max_length=250, blank=False, null=False)
-    # interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
-    interests = models.ManyToManyField(Interest)
-    status = models.IntegerField(choices=status,default=status[0][0])
-    longname = models.CharField(max_length=100, blank=True, null=True)
-    # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
-    # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.name
-    
+    #     return self.
 class PlanFeature(models.Model):
     name = models.CharField(max_length=20)
     def __str__(self):
@@ -113,6 +88,32 @@ class Plan(models.Model):
 
     def __str__(self):
         return  f'{self.name}'
+class Organization(models.Model):
+    name = models.CharField(max_length=100, blank=False, null=False)
+    logo = models.ImageField(upload_to='fs_business_mvt/static/uploads', default="")
+    cr_number = models.CharField(max_length=20, blank=False, null=False)
+    phone_number = models.CharField(max_length=100, blank=False, null=False)
+    email_address = models.EmailField(max_length=100, blank=False, null=False)
+    sector = models.CharField(max_length=100, blank=False, null=False)
+    website = models.CharField(max_length=100)
+    address_one = models.CharField(max_length=100) #,blank=False, null=False
+    address_two = models.CharField(max_length=100)
+    city = models.CharField(max_length=100, blank=False, null=False)
+    country = models.ForeignKey(Country, on_delete = models.DO_NOTHING, blank=False, null=False,db_index=False,db_constraint=False, default=837)
+    zip_code = models.IntegerField(blank=False, null=False)
+    content_info = models.TextField(max_length=250, blank=False, null=False)
+    # interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
+    interests = models.ManyToManyField(Interest)
+    status = models.IntegerField(choices=status,default=status[0][0])
+    plan = models.ForeignKey(Plan, on_delete = models.DO_NOTHING, unique=False, default=1)
+    # longname = models.CharField(max_length=100, blank=True, null=True)
+    # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
+    # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name
+    
+
 
 
 
