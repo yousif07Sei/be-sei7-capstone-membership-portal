@@ -1,21 +1,53 @@
 from rest_framework import serializers
-from .models import Benefit, Organization, User, Profile, Plan, Event, Interest, Country
+from .models import Benefit, Organization, PlanFeature, User, Profile, Plan, Event, Interest, Country
 
 # from .models import TestModel
+class PlanFeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlanFeature
+        fields = '__all__'
+
+
+class PlanSerializer(serializers.ModelSerializer):
+    plan_feature = PlanFeatureSerializer(many = True)
+    class Meta:
+        model = Plan
+        fields = '__all__'
 
 class OrganizationSerializer(serializers.ModelSerializer):
     country_name = serializers.SerializerMethodField()
     country_short_name = serializers.SerializerMethodField()
+    country_flag = serializers.SerializerMethodField()
+    plan = PlanSerializer()
+    plan_name = serializers.SerializerMethodField()
+    # plan_feature_name = serializers.SerializerMethodField()
     class Meta:
         model = Organization
-        fields = ['id', 'name', 'logo', 'cr_number', 'email_address', 'sector', 'website', 'address_one', 'address_two', 'city', 'zip_code', 'content_info', 'interests', 'status', 'country', 'country_name', 'country_short_name']
+        fields = ['id', 'name', 'logo', 'cr_number', 'phone_number', 'email_address', 'sector', 'website', 'address_one', 'address_two', 'city', 'zip_code', 'content_info', 'interests', 'status', 'country', 'country_name', 'country_short_name', 'country_flag', 'plan_id', 'plan', 'plan_name']
     
     def get_country_name(self, obj):
         return obj.country.name if obj.country else None
     
     def get_country_short_name(self, obj):
         return obj.country.short_name if obj.country else None
-
+    
+    def get_country_flag(self, obj):
+        return obj.country.flag if obj.country else None
+    
+    def get_plan_name(self, obj):
+        return obj.plan.name if obj.country else None
+    
+    # def get_plan_name(self, obj):
+    #     if hasattr(obj, 'plan') and obj.plan is not None and hasattr(obj.plan, 'name') and obj.plan.name is not None:
+    #         return obj.plan.name
+    #     else:
+    #         return None
+        
+    def get_plan_feature_name(self, obj):
+        # get the plan feature
+        pass
+        # serialize plan feature and return it
+        
 class BenefitSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
     class Meta:
@@ -133,7 +165,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name','image','dob','email','martial','gender','role','nationality_id','status','organization_id', 'organization_name']
     
     def get_organization_name(self, obj):
-        return obj.organization.name if obj.organization else None
+        if hasattr(obj, 'organization') and obj.organization is not None and hasattr(obj.organization, 'name') and obj.organization.name is not None:
+            return obj.organization.name
+        else:
+            return None
+
+
         
     def create(self, validated_data):
         User.objects.create()
@@ -150,10 +187,7 @@ class UserSerializer(serializers.ModelSerializer):
     # username = serializers.CharField()
     # profile = serializers.DictField()
 
-class PlanSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Plan
-        fields = '__all__'
+
 
 class PlanRESTSerializers(serializers.Serializer):
     name = serializers.CharField(required = True)
@@ -188,3 +222,8 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['title','description','location','sponsor','start_date','end_date']
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'

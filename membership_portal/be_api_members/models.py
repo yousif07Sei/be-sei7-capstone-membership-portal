@@ -33,12 +33,6 @@ class Interest(models.Model):
     def __str__(self):
         return self.interest
 
-benefit_status = (
-    ('0', 'pending'),
-    ('1', 'approved'),
-    ('2', 'hidden')
-)
-
 features = (
     ("B", "Benefits"),
     ("E", "Events"),
@@ -74,7 +68,7 @@ class PlanFeature(models.Model):
     name = models.CharField(max_length=20)
     def __str__(self):
         return self.name
-    
+
 # Yousif Added the model plan
 class Plan(models.Model):
     name =models.CharField(max_length=100)
@@ -88,6 +82,7 @@ class Plan(models.Model):
 
     def __str__(self):
         return  f'{self.name}'
+
 class Organization(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     logo = models.ImageField(upload_to='fs_business_mvt/static/uploads', default="")
@@ -105,17 +100,15 @@ class Organization(models.Model):
     # interests = models.CharField(max_length=1, choices=interests, default=interests[0][0])
     interests = models.ManyToManyField(Interest)
     status = models.IntegerField(choices=status,default=status[0][0])
+
     plan = models.ForeignKey(Plan, on_delete = models.DO_NOTHING, unique=False, default=1)
     # longname = models.CharField(max_length=100, blank=True, null=True)
+
     # assistant = models.ForeignKey(User , on_delete=models.DO_NOTHING)
     # admin = models.ForeignKey(User , on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.name
-    
-
-
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
