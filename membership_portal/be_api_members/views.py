@@ -38,10 +38,10 @@ def user_list(request):
 @permission_classes([permissions.IsAuthenticated])
 def benefit_list(request):
     '''
-    Get list of all available benefits
+    Get list of all active benefits
     '''
     try:
-        benefit_list = Benefit.objects.all()
+        benefit_list = Benefit.objects.filter(status = 1, expiry_date__gte = timezone.now().date())
         serializer = BenefitSerializer(benefit_list, many = True)
         response = serializer.data
     except ValidationError as e:
@@ -224,7 +224,7 @@ def organization_list(request):
     Get list of all registered organizations 
     '''
     try:
-        organization_list = Organization.objects.all()
+        organization_list = Organization.objects.filter(status = 1).order_by('name')
         serializer = OrganizationSerializer(organization_list, many = True)
         response = serializer.data
     except ValidationError as e:
