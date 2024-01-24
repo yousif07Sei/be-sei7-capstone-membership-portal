@@ -38,10 +38,10 @@ def user_list(request):
 @permission_classes([permissions.IsAuthenticated])
 def benefit_list(request):
     '''
-    Get list of all available benefits
+    Get list of all active benefits
     '''
     try:
-        benefit_list = Benefit.objects.all()
+        benefit_list = Benefit.objects.filter(status = 1, expiry_date__gte = timezone.now().date())
         serializer = BenefitSerializer(benefit_list, many = True)
         response = serializer.data
     except ValidationError as e:
@@ -162,7 +162,7 @@ def benefit_update(request):
 
 @csrf_exempt
 @api_view(['GET'])
-def user_details(request):
+def user_detail(request):
     email = request.query_params['email']
     profile = get_object_or_404(Profile,email=email)
     username = get_object_or_404(User,id = profile.user_id).username
@@ -224,7 +224,7 @@ def organization_list(request):
     Get list of all registered organizations 
     '''
     try:
-        organization_list = Organization.objects.all()
+        organization_list = Organization.objects.filter(status = 1).order_by('name')
         serializer = OrganizationSerializer(organization_list, many = True)
         response = serializer.data
     except ValidationError as e:
@@ -254,6 +254,18 @@ def organization_detail(request):
     except Exception as e:
         response = str(e)
     return JsonResponse(response, safe = False)
+
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def organization_members(request):
+    '''
+    Get list of members that belong to an organization
+    '''
+    organization_id = request.query_params['id']
+    members = Profile.objects.filter(organization_id = organization_id, status = 1)
+    serializer = ProfileSerializer(members, many = True)
+    return JsonResponse(serializer.data, safe = False)
 
 @csrf_exempt
 @api_view(['POST'])

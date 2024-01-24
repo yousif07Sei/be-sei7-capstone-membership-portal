@@ -19,6 +19,7 @@ urlpatterns = [
     path('organization/delete', views.organization_delete, name = 'organization_delete'),
     path('organization/create', views.organization_create, name = 'organization_create'),
     path('organization/update', views.organization_update, name = 'organization_update'),
+    path('organization/members', views.organization_members, name = 'organization_members'),
 
     # API endpoints for plan
     path('plan/list', views.plan_list, name = 'plan_list'),
@@ -31,7 +32,7 @@ urlpatterns = [
     # API engpoints for countries
     path('country/list', views.country_list, name = 'country_list'),
 
-    path('user/',views.user_details,name='user_details'),
+    path('user/',views.user_detail,name='user_detail'),
     path('user/create/',views.user_create,name='user_create')
     # path('login/',views.LoginAPIView,name='login')  
 
